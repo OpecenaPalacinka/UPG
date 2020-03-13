@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14f9ac58-08b1-41a8-994c-29ed658077f4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../DrawingPanel/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../DrawingPanel/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../DrawingPanel/src/DrawingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../DrawingPanel/out/production/DrawingPanel/BasicDrawing.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../DrawingPanel/out/production/DrawingPanel/BasicDrawing.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../DrawingPanel/out/production/DrawingPanel/DrawingPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../DrawingPanel/out/production/DrawingPanel/DrawingPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../DrawingPanel/src/BasicDrawing.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../DrawingPanel/src/BasicDrawing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../DrawingPanel/src/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../DrawingPanel/src/DrawingPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
