@@ -7,11 +7,16 @@ public class L01_SpusteniSimulatoru {
 
 	public static void main(String[] args) {
 		Scenarios[] scenarios = Simulator.getScenarios();
-		
+
+		if(args.length>1){
+			System.out.println("Zadejte pouze jeden parametr a to číslo od 1 do 4");
+		}
+
 		// Vypis existujicich scenaru
 		for(Scenarios sc: scenarios) {
 			System.out.println(sc);
 		}
+
 		
 		// Nahrani a spusteni prvniho scenare
 		Simulator.runScenario(0);
