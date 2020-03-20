@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14f9ac58-08b1-41a8-994c-29ed658077f4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../DrawingPanel/out/production/DrawingPanel/BasicDrawing.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../DrawingPanel/out/production/DrawingPanel/BasicDrawing.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../DrawingPanel/out/production/DrawingPanel/DrawingPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../DrawingPanel/out/production/DrawingPanel/DrawingPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../DrawingPanel/src/BasicDrawing.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../DrawingPanel/src/BasicDrawing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../DrawingPanel/src/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../DrawingPanel/src/DrawingPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,6 +55,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="739" y="261" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1584085128200" />
+    <state x="656" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1584172869635">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="656" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1584172869635" />
     <state x="342" y="140" key="new project wizard" timestamp="1584085142856">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
