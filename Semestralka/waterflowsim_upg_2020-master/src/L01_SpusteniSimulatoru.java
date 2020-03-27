@@ -1,22 +1,19 @@
 import waterflowsim.Simulator;
 import waterflowsim.Scenarios;
 import waterflowsim.Cell;
+
+import javax.swing.*;
 import java.util.List;
 
-public class L01_SpusteniSimulatoru {
+public class L01_SpusteniSimulatoru extends JFrame {
 
 	public static void main(String[] args) {
 		Scenarios[] scenarios = Simulator.getScenarios();
-
-		if(args.length>1){
-			System.out.println("Zadejte pouze jeden parametr a to číslo od 1 do 4");
-		}
-
+		
 		// Vypis existujicich scenaru
 		for(Scenarios sc: scenarios) {
 			System.out.println(sc);
 		}
-
 		
 		// Nahrani a spusteni prvniho scenare
 		Simulator.runScenario(0);
@@ -38,6 +35,18 @@ public class L01_SpusteniSimulatoru {
 			System.out.print(up.getName());
 			System.out.println(" na indexu v poli: "+up.getIndex());
 		}
+
+		JFrame jf = new JFrame();
+		jf.setTitle("A19B0157P");
+
+		DrawingPanel panel = new DrawingPanel();
+		jf.add(panel);
+		jf.pack();
+
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jf.setLocationRelativeTo(null);
+		jf.setVisible(true);
 	}
+
 
 }
