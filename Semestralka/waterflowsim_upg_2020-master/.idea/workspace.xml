@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c98158c4-d738-4fcd-9c68-7fa86a183a21" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DrawingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1Zi8afTt2J5lgPzngB85M8E3LqF" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/2.Semestr/PPA2/PPA2_03" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+  </component>
+  <component name="RunManager">
+    <configuration name="L01_SpusteniSimulatoru" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="L01_SpusteniSimulatoru" />
+      <module name="UPG2020" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.L01_SpusteniSimulatoru" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c98158c4-d738-4fcd-9c68-7fa86a183a21" name="Default Changelist" comment="" />
+      <created>1585310618579</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585310618579</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1253" y="379" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1585313248477">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1253" y="379" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1920.1040@0.0.1920.1040" timestamp="1585313248477" />
+    <state width="932" height="281" key="GridCell.Tab.0.bottom" timestamp="1585326174044">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="932" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1585326174044" />
+    <state width="932" height="281" key="GridCell.Tab.0.center" timestamp="1585326174044">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="932" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1585326174044" />
+    <state width="932" height="281" key="GridCell.Tab.0.left" timestamp="1585326174044">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="932" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1585326174044" />
+    <state width="932" height="281" key="GridCell.Tab.0.right" timestamp="1585326174044">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="932" height="281" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1585326174044" />
   </component>
 </project>
