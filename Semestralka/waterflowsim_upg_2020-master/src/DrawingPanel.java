@@ -1,146 +1,220 @@
 import waterflowsim.*;
-import javax.swing.*;
+
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import javax.swing.JPanel;
 
+/**
+ * Třída, která má nastarost vykreslování podle simulátoru, používá se v hlavní třídě L01_SpusteniSimulatoru
+ *
+ */
 public class DrawingPanel extends JPanel {
+    /**
+     * Privátní proměnné celé třídy, velikost mapy (x a y)
+     */
+    private double maxX, maxY;
+    /**
+     * Privátní proměnné celé třídy, začátek souřadnicového systému (inicializuju na nulu
+     * (měli by být asi inicialiované na Simulator.getStart().x/y))
+     */
+    private double minX, minY;
+    /**
+     * Privátní proměnná celé třídy, udává počet vodních zdrojů
+     */
+    private int vodniZdroje = Simulator.getWaterSources().length;
+    /**
+     * Proměnná celé třídy, jde o hodnotu škálování
+     */
+    double scale;
+    /**
+     * Proměnní celé třídy, jde o "startovní" hodnotu použitou v translate
+     */
+    int startX, startY;
 
-    private double minX,maxX;
-    private double minY,maxY;
-    private double hodnotaX, hodnotaY;
-    private int velikostWidth = 1000;
-    private int	velikostHeight = 1000;
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D)g;
-
-        computeModel2WindowTransformation(Simulator.getDimension().x,Simulator.getDimension().y);
-
-        int width = this.getWidth();
-        int height = this.getHeight();
-
-        double scaleX = width/hodnotaX;
-        double scaleY = height/hodnotaY;
-        double scale = Math.min(scaleX,scaleY);
-
-        /*
-        double startX = (width - scale*width)/4;
-        double startY = (height - scale*height)/4;
-
-         */
-
-        g2.scale(scale,scale);
-
-        drawWaterFlowState(g2);
+    /**
+     * Zkopírováno z CW z cvičení3
+     * Metoda dělá šipky podle zadané pozice a vektoru
+     * @param position získání pozice pro x1/x2 a y1/y2
+     * @param dirFlow získání vektoru pro směr šipky
+     * @param g grafický kontext
+     */
+    public void drawArrow(Point2D position, Vector2D dirFlow, Graphics2D g){
+        double x1 = position.getX() ;
+        double x2 = position.getX() - dirFlow.x.doubleValue() * 60;
+        double y1 = position.getY() ;
+        double y2 = position.getY() - dirFlow.y.doubleValue() * 60;
+        double vx = x2 - x1;
+        double vy = y2 - y1;
+        double vLength = Math.sqrt(vx*vx + vy*vy);
+        double vNormX = vx / vLength;
+        double vNormY = vy / vLength;
+        double vArrowX = vNormX * 15;
+        double vArrowY = vNormY * 15;
+        double kx = -vArrowY;
+        double ky = vArrowX;
+        kx *= 0.25;
+        ky *= 0.25;
+        Line2D hlavniCara = new Line2D.Double(x1, y1, x2, y2);
+        g.draw(hlavniCara);
+        Line2D horniSipkaCara = new Line2D.Double(x2, y2, x2 - vArrowX + kx, y2 - vArrowY + ky);
+        g.draw(horniSipkaCara);
+        Line2D spodniSipkaCara = new Line2D.Double(x2, y2, x2 - vArrowX - kx, y2 - vArrowY - ky);
+        g.draw(spodniSipkaCara);
     }
 
+    /**
+     * Metoda vykreslí aktuální stav toku vody v krajině, poskytnutý simulátorem, prostřednictvím
+     * níže popsaných metod drawTerrain a drawWaterLayer.
+     * @param g grafický kontext
+     */
     public void drawWaterFlowState(Graphics2D g){
         drawTerrain(g);
         drawWaterLayer(g);
     }
 
+    /**
+     * Zatím nic nedělá
+     * @param g grafický kontext
+     */
     public void drawTerrain(Graphics2D g){
+
     }
 
+    /**
+     * Vykresluje vodní plochy hlavně pomocí metody isDry, volá zde metodu drawWaterSources pro
+     * vykreslení hlavních vodních zdrojů
+     * @param g grafický kontext
+     */
     public void drawWaterLayer(Graphics2D g){
-        computeModelDimensions();
-            drawWaterSources(g);
-            Path2D water = new Path2D.Double();
-            int cellBefore;
-            int cellAfter;
-            g.setColor(Color.BLUE);
-            for(int i = 0; i < maxY-1; i++) {
-                for(int j = 0; j < maxX-1; j++) {
-                    cellBefore = i * (int)maxX + j;
-                    cellAfter = (i + 1) * (int)maxX + (j + 1);
-                    Cell cell = Simulator.getData()[cellBefore];
-                    Cell cell2 = Simulator.getData()[cellAfter];
-                    if(!cell.isDry()) {
-                        if(!cell2.isDry()) {
-                            water.lineTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
-                        }else {
-                            water.moveTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
-                        }
-                    }else {
+        Path2D water = new Path2D.Double();
+        int cellBefore;
+        int cellAfter;
+        g.setColor(Color.blue);
+        for(int i = 0; i < maxY-1; i++) {
+            for(int j = 0; j < maxX-1; j++) {
+                cellBefore = i * (int) maxX + j;
+                cellAfter = (i + 1) * (int) maxX + (j + 1);
+                Cell cell = Simulator.getData()[cellBefore];
+                Cell cell2 = Simulator.getData()[cellAfter];
+                if (!cell.isDry()) {
+                    if (!cell2.isDry()) {
                         water.moveTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
+                        water.lineTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
+
                     }
                 }
             }
-            g.draw(water);
-
         }
+        g.draw(water);
+        g.setColor(Color.black);
+        if(vodniZdroje > 0) {
+            drawWaterSources(g);
+        }
+    }
 
+    /**
+     * Metoda prostřednictvím metody drawWaterFlowLabel vykreslí všechny vodní zdroje v
+     * krajině, poskytnuté metodou simulátoru getWaterSources
+     * @param g grafický kontext
+     */
     public void drawWaterSources(Graphics2D g){
-        waterflowsim.WaterSourceUpdater[] vodniZdroje = Simulator.getWaterSources();
-        for(waterflowsim.WaterSourceUpdater updater: vodniZdroje){
-          Point2D uvodniBod = new Point2D.Double(hodnotaX,hodnotaY);
-            drawWaterFlowLabel(uvodniBod,Simulator.getGradient(updater.getIndex()),updater.getName(),g);
+        waterflowsim.WaterSourceUpdater[] zdroje = Simulator.getWaterSources();
+        for(waterflowsim.WaterSourceUpdater up: zdroje) {
+            drawWaterFlowLabel((new Point2D.Double(up.getIndex() % maxX, up.getIndex() / maxX)), Simulator.getGradient(up.getIndex()), up.getName(), g);
         }
-
     }
+
+    /**
+     * Metoda vykreslí na zadané pozici (v pixelech v souřadném systému okna) šipku ve směru
+     * dirFlow znázorňující směr toku vody a dále název vodního toku (name).
+     * @param position Pozice
+     * @param dirFlow Vektor směru kudy má směřovat šipka
+     * @param name Jméno řeky
+     * @param g grafický kontext
+     */
     public void drawWaterFlowLabel(Point2D position, Vector2D dirFlow, String name, Graphics2D g){
-        double x1 = position.getX();
-        double x2 = position.getX()-dirFlow.x.doubleValue();
-        double y1 = position.getY();
-        double y2 = position.getY()-dirFlow.y.doubleValue();
+        double posunX = position.getX() + 20;
+        double posunY = position.getY() + 2;
+        Point2D posunutyBod = new Point2D.Double(posunX ,posunY );
+        g.setColor(Color.BLACK);
+        g.rotate(dirFlow.x.doubleValue());
+        g.drawString(name, (int)posunX, (int)posunY);
+        g.rotate(-dirFlow.x.doubleValue());
+        g.setColor(Color.DARK_GRAY);
+        drawArrow(posunutyBod, dirFlow, g);
 
-        // Spocitame slozky vektoru od (x1, y1) k (x2, y2)
-        double vx = x2 - x1;
-        double vy = y2 - y1;
-
-        // Spocitame vektoru v, tj usecky od (x1, y1) k (x2, y2).
-        // K vypoctu druhe mocniny idealne pouzivame nasobeni, ne funkci pow
-        // (je mnohem pomalejsi).
-        double vLength = Math.sqrt(vx*vx + vy*vy);
-
-        // Z vektoru v udelame vektor jednotkove delky
-        double vNormX = vx / vLength;
-        double vNormY = vy / vLength;
-
-        // Vektor v protahneme na delku arrowLength
-        double vArrowX = vNormX * 20;
-        double vArrowY = vNormY * 20;
-
-        // Spocitame vektor kolmy k (vx, vy)
-        // Z nej pak odvodime koncove body carek tvoricich sipku.
-        double kx = -vArrowY;
-        double ky = vArrowX;
-
-        // Upravime delku vektoru k, aby byla sipka hezci
-        kx *= 0.25;
-        ky = 0.25;
-
-        // Cara od (x1, y1) k (x2, y2)
-        g.draw(new Line2D.Double(x1, y1, position.getX()+dirFlow.x.doubleValue()*50, position.getY()+dirFlow.y.doubleValue()*50));
-
-        // Sipka na konci
-        g.draw(new Line2D.Double(x2, y2, x2 - vArrowX + kx, y2 - vArrowY + ky));
-        g.draw(new Line2D.Double(x2, y2, x2 - vArrowX - kx, y2 - vArrowY - ky));
     }
 
+    /**
+     * Metoda stanoví minimální a maximální souřadnice v metrech ve směru X a Y a uloží je do
+     * stavových proměnných.
+     */
     public void computeModelDimensions(){
-        minX= Simulator.getStart().x;
-        minY= Simulator.getStart().y;
-        maxX=Simulator.getDimension().x.doubleValue();
-        maxY=Simulator.getDimension().y.doubleValue();
+       /* Se zakomentovaným minX/Y se celý obrázek zvláštně posouval, s 0 to funguje dobře */
+        //minX = Simulator.getStart().x;
+        //minY = Simulator.getStart().y;
+        maxX = Simulator.getDimension().x;
+        maxY = Simulator.getDimension().y;
+        minX = 0;
+        minY = 0;
     }
 
+    /**
+     * Metoda inicializuje stavové proměnné používané pro přepočet souřadnic modelu (v metrech)
+     * na souřadnice okna (v pixelech). Metoda určí vhodnou změnu měřítka a posun ve směru X a
+     * Y tak, aby bylo zaručeno, že se veškeré souřadnice modelu transformují do okna o rozměrech width, height, a to
+     * včetně „přesahů“ grafických reprezentací elementů umístěných na extrémních souřadnicích
+     * @param width šířka
+     * @param height výška
+     */
     public void computeModel2WindowTransformation(int width, int height){
         computeModelDimensions();
-        hodnotaX = maxX-minX;
-        hodnotaY = maxY-minY;
+        double scalex = width / (maxX - minX);
+        double scaley = height / (maxY - minY);
+        scale = Math.min(scalex, scaley);
+
+        int nimW = (int) ((maxX - minX) * scale);
+        int nimH = (int) ((maxY - minY) * scale);
+
+        startX = (width - nimW) / 2;
+        startY = (height - nimH) / 2;
     }
 
+    /**
+     * Metoda převede souřadnice modelu na souřadnice okna s využitím hodnot stavových
+     * proměnných určených v metodě computeModel2WindowTransformation. Vrací bod m.
+     * ((metodu nikde nepoužívám, byla v doporučené struktuře, tak jsem ji udělal ale asi ji nepotřbeuju))
+     * @param m Point2D bod
+     * @return Změněný bod m z parametrů
+     */
     public Point2D model2window(Point2D m){
-        computeModel2WindowTransformation((int)hodnotaX,(int)hodnotaY);
-        m.setLocation(hodnotaX,hodnotaY);
+        m.setLocation((m.getX() + 30) / (scale),(m.getY() - 30) / (scale));
         return m;
     }
 
+    /**
+     * "Poslední" metoda, která dává dohromady všechny metody nad ní, volá metodu drawWaterFlowState
+     * Vykresluje výsledek
+     * @param g grafický kontext
+     */
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        computeModel2WindowTransformation(this.getWidth(),this.getHeight());
+        Graphics2D g2 = (Graphics2D)g;
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
+        if(scale > 1) {
+            g2.setStroke(new BasicStroke(3));
+        }
 
+        AffineTransform oldTR = g2.getTransform();
+        g2.translate(startX, startY);
+        g2.scale(scale, scale);
+        drawWaterFlowState(g2);
+        g2.setTransform(oldTR);
+    }
 }
