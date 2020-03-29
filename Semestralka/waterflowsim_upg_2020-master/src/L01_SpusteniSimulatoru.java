@@ -29,7 +29,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		}
 
 		JFrame jf = new JFrame();
-		jf.setTitle("Water flow - A19B0157P");
+		jf.setTitle("Seminární práce - A19B0157P");
 		DrawingPanel panel = new DrawingPanel();
 		panel.setPreferredSize(new Dimension(Simulator.getDimension().x, Simulator.getDimension().y));
 		jf.add(panel);

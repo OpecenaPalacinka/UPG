@@ -24,7 +24,11 @@ public class DrawingPanel extends JPanel {
     /**
      * Privátní proměnná celé třídy, udává počet vodních zdrojů
      */
-    private int vodniZdroje = Simulator.getWaterSources().length;
+    private int pocetVodnichZdroju = Simulator.getWaterSources().length;
+    /**
+     * Privátní proměnná celé třídy, vytváří pole se zdroji vody
+     */
+    private WaterSourceUpdater[] vodniZdroje = Simulator.getWaterSources();
     /**
      * Proměnná celé třídy, jde o hodnotu škálování
      */
@@ -33,6 +37,7 @@ public class DrawingPanel extends JPanel {
      * Proměnní celé třídy, jde o "startovní" hodnotu použitou v translate
      */
     int startX, startY;
+
 
     /**
      * Zkopírováno z CW z cvičení3
@@ -89,18 +94,18 @@ public class DrawingPanel extends JPanel {
      * @param g grafický kontext
      */
     public void drawWaterLayer(Graphics2D g){
-        Path2D water = new Path2D.Double();
-        int cellBefore;
-        int cellAfter;
+        int bunka;
+        int bunkaNasledujici;
         g.setColor(Color.blue);
+        Path2D water = new Path2D.Double();
         for(int i = 0; i < maxY-1; i++) {
             for(int j = 0; j < maxX-1; j++) {
-                cellBefore = i * (int) maxX + j;
-                cellAfter = (i + 1) * (int) maxX + (j + 1);
-                Cell cell = Simulator.getData()[cellBefore];
-                Cell cell2 = Simulator.getData()[cellAfter];
-                if (!cell.isDry()) {
-                    if (!cell2.isDry()) {
+                bunka = i * (int) maxX + j;
+                bunkaNasledujici = (i + 1) * (int) maxX + (j + 1);
+                Cell bunka1 = Simulator.getData()[bunka];
+                Cell bunka2 = Simulator.getData()[bunkaNasledujici];
+                if (!bunka1.isDry()) {
+                    if (!bunka2.isDry()) {
                         water.moveTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
                         water.lineTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
 
@@ -109,8 +114,7 @@ public class DrawingPanel extends JPanel {
             }
         }
         g.draw(water);
-        g.setColor(Color.black);
-        if(vodniZdroje > 0) {
+        if(pocetVodnichZdroju > 0) {
             drawWaterSources(g);
         }
     }
@@ -121,9 +125,9 @@ public class DrawingPanel extends JPanel {
      * @param g grafický kontext
      */
     public void drawWaterSources(Graphics2D g){
-        waterflowsim.WaterSourceUpdater[] zdroje = Simulator.getWaterSources();
-        for(waterflowsim.WaterSourceUpdater up: zdroje) {
-            drawWaterFlowLabel((new Point2D.Double(up.getIndex() % maxX, up.getIndex() / maxX)), Simulator.getGradient(up.getIndex()), up.getName(), g);
+        for(WaterSourceUpdater waterSourceUpdater: vodniZdroje) {
+            Point2D poziceSipky = new Point2D.Double(waterSourceUpdater.getIndex() % maxX, waterSourceUpdater.getIndex() / maxX);
+            drawWaterFlowLabel(poziceSipky, Simulator.getGradient(waterSourceUpdater.getIndex()), waterSourceUpdater.getName(), g);
         }
     }
 
@@ -138,12 +142,18 @@ public class DrawingPanel extends JPanel {
     public void drawWaterFlowLabel(Point2D position, Vector2D dirFlow, String name, Graphics2D g){
         double posunX = position.getX() + 20;
         double posunY = position.getY() + 2;
-        Point2D posunutyBod = new Point2D.Double(posunX ,posunY );
+        Point2D posunutyBod = new Point2D.Double(posunX ,posunY);
+
+        AffineTransform bezTransformu = g.getTransform();
+        g.translate(posunX,posunY);
+        g.rotate(Math.atan(dirFlow.y.doubleValue() / dirFlow.x.doubleValue()));
+
         g.setColor(Color.BLACK);
-        g.rotate(dirFlow.x.doubleValue());
-        g.drawString(name, (int)posunX, (int)posunY);
-        g.rotate(-dirFlow.x.doubleValue());
-        g.setColor(Color.DARK_GRAY);
+        g.drawString(name, 5, 15);
+
+        g.setTransform(bezTransformu);
+
+        g.setColor(Color.MAGENTA);
         drawArrow(posunutyBod, dirFlow, g);
 
     }
