@@ -31,7 +31,8 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		JFrame jf = new JFrame();
 		jf.setTitle("Seminární práce - A19B0157P");
 		DrawingPanel panel = new DrawingPanel();
-		panel.setPreferredSize(new Dimension(Simulator.getDimension().x, Simulator.getDimension().y));
+		Dimension velikostOkna = new Dimension(Simulator.getDimension().x, Simulator.getDimension().y);
+		panel.setPreferredSize(velikostOkna);
 		jf.add(panel);
 		jf.pack();
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

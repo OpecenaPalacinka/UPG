@@ -34,9 +34,9 @@ public class DrawingPanel extends JPanel {
      */
     double scale;
     /**
-     * Proměnní celé třídy, jde o "startovní" hodnotu použitou v translate
+     * Proměnní celé třídy, posun souřadnicového systému
      */
-    int startX, startY;
+    int posunSouradniceX, posunSouradniceY;
 
 
     /**
@@ -98,8 +98,8 @@ public class DrawingPanel extends JPanel {
         int bunkaNasledujici;
         g.setColor(Color.blue);
         Path2D water = new Path2D.Double();
-        for(int i = 0; i < maxY-1; i++) {
-            for(int j = 0; j < maxX-1; j++) {
+        for (int i = 0; i < maxY-1; i++) {
+            for (int j = 0; j < maxX-1; j++) {
                 bunka = i * (int) maxX + j;
                 bunkaNasledujici = (i + 1) * (int) maxX + (j + 1);
                 Cell bunka1 = Simulator.getData()[bunka];
@@ -108,13 +108,12 @@ public class DrawingPanel extends JPanel {
                     if (!bunka2.isDry()) {
                         water.moveTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
                         water.lineTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
-
                     }
                 }
             }
         }
         g.draw(water);
-        if(pocetVodnichZdroju > 0) {
+        if (pocetVodnichZdroju > 0) {
             drawWaterSources(g);
         }
     }
@@ -125,7 +124,7 @@ public class DrawingPanel extends JPanel {
      * @param g grafický kontext
      */
     public void drawWaterSources(Graphics2D g){
-        for(WaterSourceUpdater waterSourceUpdater: vodniZdroje) {
+        for (WaterSourceUpdater waterSourceUpdater: vodniZdroje) {
             Point2D poziceSipky = new Point2D.Double(waterSourceUpdater.getIndex() % maxX, waterSourceUpdater.getIndex() / maxX);
             drawWaterFlowLabel(poziceSipky, Simulator.getGradient(waterSourceUpdater.getIndex()), waterSourceUpdater.getName(), g);
         }
@@ -177,6 +176,7 @@ public class DrawingPanel extends JPanel {
      * na souřadnice okna (v pixelech). Metoda určí vhodnou změnu měřítka a posun ve směru X a
      * Y tak, aby bylo zaručeno, že se veškeré souřadnice modelu transformují do okna o rozměrech width, height, a to
      * včetně „přesahů“ grafických reprezentací elementů umístěných na extrémních souřadnicích
+     * Převážná část je zkopírovaná ze cvičení6.
      * @param width šířka
      * @param height výška
      */
@@ -189,8 +189,8 @@ public class DrawingPanel extends JPanel {
         int nimW = (int) ((maxX - minX) * scale);
         int nimH = (int) ((maxY - minY) * scale);
 
-        startX = (width - nimW) / 2;
-        startY = (height - nimH) / 2;
+        posunSouradniceX = (width - nimW) / 2;
+        posunSouradniceY = (height - nimH) / 2;
     }
 
     /**
@@ -213,18 +213,21 @@ public class DrawingPanel extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        computeModel2WindowTransformation(this.getWidth(),this.getHeight());
         Graphics2D g2 = (Graphics2D)g;
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
+        computeModel2WindowTransformation(this.getWidth(),this.getHeight());
+
         if(scale > 1) {
-            g2.setStroke(new BasicStroke(3));
+            g2.setStroke(new BasicStroke(2));
         }
 
-        AffineTransform oldTR = g2.getTransform();
-        g2.translate(startX, startY);
+        AffineTransform puvodniTransformace = g2.getTransform();
+        g2.translate(posunSouradniceX, posunSouradniceY);
         g2.scale(scale, scale);
+
         drawWaterFlowState(g2);
-        g2.setTransform(oldTR);
+
+        g2.setTransform(puvodniTransformace);
     }
 }
