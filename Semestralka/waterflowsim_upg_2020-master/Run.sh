@@ -1,2 +1,2 @@
 #!/bin/bash
-java -cp ./bin:./WaterFlowSim.jar L01_SpusteniSimulatoru $@
+java -cp ./bin:./WaterFlowSim.jar L01_SpusteniSimulatoru %*

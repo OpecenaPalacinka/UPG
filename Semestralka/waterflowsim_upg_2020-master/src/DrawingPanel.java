@@ -40,6 +40,32 @@ public class DrawingPanel extends JPanel {
 
 
     /**
+     * "Poslední" metoda, která dává dohromady všechny metody nad ní, volá metodu drawWaterFlowState
+     * Vykresluje výsledek
+     * @param g grafický kontext
+     */
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D)g;
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+
+        computeModel2WindowTransformation(this.getWidth(),this.getHeight());
+
+        if(scale > 1) {
+            g2.setStroke(new BasicStroke(2));
+        }
+
+        AffineTransform puvodniTransformace = g2.getTransform();
+        g2.translate(posunSouradniceX, posunSouradniceY);
+        g2.scale(scale, scale);
+
+        drawWaterFlowState(g2);
+
+        g2.setTransform(puvodniTransformace);
+    }
+
+    /**
      * Zkopírováno z CW z cvičení3
      * Metoda dělá šipky podle zadané pozice a vektoru
      * @param position získání pozice pro x1/x2 a y1/y2
@@ -99,15 +125,15 @@ public class DrawingPanel extends JPanel {
         g.setColor(Color.blue);
         Path2D water = new Path2D.Double();
         for (int i = 0; i < maxY-1; i++) {
-            for (int j = 0; j < maxX-1; j++) {
-                bunka = i * (int) maxX + j;
-                bunkaNasledujici = (i + 1) * (int) maxX + (j + 1);
+            for (int y = 0; y < maxX-1; y++) {
+                bunka = i * (int) maxX + y;
+                bunkaNasledujici = (i + 1) * (int) maxX + (y + 1);
                 Cell bunka1 = Simulator.getData()[bunka];
                 Cell bunka2 = Simulator.getData()[bunkaNasledujici];
                 if (!bunka1.isDry()) {
                     if (!bunka2.isDry()) {
-                        water.moveTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
-                        water.lineTo(j + Simulator.getDelta().x, i + Simulator.getDelta().y);
+                        water.moveTo(y + Simulator.getDelta().x, i + Simulator.getDelta().y);
+                        water.lineTo(y + Simulator.getDelta().x, i + Simulator.getDelta().y);
                     }
                 }
             }
@@ -125,7 +151,7 @@ public class DrawingPanel extends JPanel {
      */
     public void drawWaterSources(Graphics2D g){
         for (WaterSourceUpdater waterSourceUpdater: vodniZdroje) {
-            Point2D poziceSipky = new Point2D.Double(waterSourceUpdater.getIndex() % maxX, waterSourceUpdater.getIndex() / maxX);
+            Point2D poziceSipky = new Point2D.Double((int)waterSourceUpdater.getIndex() % maxX, (int)waterSourceUpdater.getIndex() / maxX);
             drawWaterFlowLabel(poziceSipky, Simulator.getGradient(waterSourceUpdater.getIndex()), waterSourceUpdater.getName(), g);
         }
     }
@@ -205,29 +231,5 @@ public class DrawingPanel extends JPanel {
         return m;
     }
 
-    /**
-     * "Poslední" metoda, která dává dohromady všechny metody nad ní, volá metodu drawWaterFlowState
-     * Vykresluje výsledek
-     * @param g grafický kontext
-     */
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D)g;
-        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
-        computeModel2WindowTransformation(this.getWidth(),this.getHeight());
-
-        if(scale > 1) {
-            g2.setStroke(new BasicStroke(2));
-        }
-
-        AffineTransform puvodniTransformace = g2.getTransform();
-        g2.translate(posunSouradniceX, posunSouradniceY);
-        g2.scale(scale, scale);
-
-        drawWaterFlowState(g2);
-
-        g2.setTransform(puvodniTransformace);
-    }
 }

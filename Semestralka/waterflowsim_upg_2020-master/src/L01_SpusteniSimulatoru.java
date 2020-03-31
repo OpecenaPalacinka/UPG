@@ -17,7 +17,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 	 * @param args parametry příkazové řádky
 	 */
 	public static void main(String[] args) {
-
+		
 		if (args.length > 0 && Integer.parseInt(args[0])>3){
 			System.out.println("Zadali jste moc velké číslo, spouštím prvním scénář!");
 			Simulator.runScenario(0);
