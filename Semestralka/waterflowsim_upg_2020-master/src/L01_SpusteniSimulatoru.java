@@ -11,6 +11,8 @@ import java.util.TimerTask;
  * @version 1.1.54
  */
 public class L01_SpusteniSimulatoru extends JFrame {
+	static double v = 0.002;
+	static double zmena = 0.005;
 
 	/**
 	 * Hlavní třída, spouští různé scénáře podle parametrů zadaných do příkazové řádky
@@ -30,10 +32,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 
 		JFrame jf = new JFrame();
 		jf.setTitle("Seminární práce - A19B0157P");
-		DrawingPanel panel = new DrawingPanel();
-		Dimension velikostOkna = new Dimension(Simulator.getDimension().x, Simulator.getDimension().y);
-		panel.setPreferredSize(velikostOkna);
-		jf.add(panel);
+		makeGui(jf);
 		jf.pack();
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setLocationRelativeTo(null);
@@ -43,11 +42,35 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		myTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				Simulator.nextStep(0.02);
-				panel.repaint();
+				Simulator.nextStep(v);
+				jf.repaint();
 			}
 		}, 0, 100);
 
 	}
+
+
+	private static void makeGui(JFrame win) {
+		DrawingPanel panel = new DrawingPanel();
+
+		JButton bttnZrychli = new JButton("Zrychli");
+		JButton bttnZpomal = new JButton("Zpomal");
+
+		Dimension velikostOkna = new Dimension(Simulator.getDimension().x, (Simulator.getDimension().y + bttnZrychli.getHeight() + DrawingPanel.velikostListy));
+		panel.setPreferredSize(velikostOkna);
+		win.setLayout(new BorderLayout());
+		win.add(panel, BorderLayout.CENTER);
+
+		JPanel buttons = new JPanel();
+		buttons.add(bttnZrychli);
+		buttons.add(bttnZpomal);
+
+		win.add(buttons, BorderLayout.SOUTH);
+
+		bttnZpomal.addActionListener(actionEvent -> v = v - zmena);
+
+		bttnZrychli.addActionListener(e -> v = v + zmena);
+	}
+
 
 }

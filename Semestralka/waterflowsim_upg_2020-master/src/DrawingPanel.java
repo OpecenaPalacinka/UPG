@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
@@ -33,8 +34,17 @@ public class DrawingPanel extends JPanel {
      * Proměnná celé třídy, jde o hodnotu škálování
      */
     double scale;
+    /** Privátní proměnná celé třídy, ukládá minimální a maximální výšku terénu*/
+    public double minTeren, maxTeren;
+    /** Privátní proměnné celé třídy, ukládají barvu pro výškové zobrazení*/
+    public static Color posledniBarva = new Color(0,100,200);
+    public static Color prvniBarva = new Color(0,posledniBarva.getGreen(),0);
+
+    /** Výška lišty*/
+    public static int velikostListy = 25;
+
     /**
-     * Proměnní celé třídy, posun souřadnicového systému
+     * Proměnná celé třídy, posun souřadnicového systému
      */
     int posunSouradniceX, posunSouradniceY;
 
@@ -63,6 +73,7 @@ public class DrawingPanel extends JPanel {
         drawWaterFlowState(g2);
 
         g2.setTransform(puvodniTransformace);
+        lista(g);
     }
 
     /**
@@ -111,7 +122,28 @@ public class DrawingPanel extends JPanel {
      * @param g grafický kontext
      */
     public void drawTerrain(Graphics2D g){
-
+        Cell[] cells = Simulator.getData();
+        minTeren = cells[0].getTerrainLevel();
+        maxTeren = cells[0].getTerrainLevel();
+        for (Cell cell : cells) {
+            double pruchod = cell.getTerrainLevel();
+            if (pruchod < minTeren) {
+                minTeren = pruchod;
+            }
+            if (pruchod > maxTeren) {
+                maxTeren = pruchod;
+            }
+        }
+        double rozdil = maxTeren-minTeren;
+        int[] teren = new int[cells.length];
+        for (int i =0;i<cells.length;i++){
+            int cervena = (int) (cells[i].getTerrainLevel()/rozdil*posledniBarva.getBlue());
+            //cviceni6
+            teren[i] = (cervena<<8) | (posledniBarva.getGreen() << 2);
+        }
+        BufferedImage terenObraz = new BufferedImage((int)maxX,(int)maxY, BufferedImage.TYPE_3BYTE_BGR);
+        terenObraz.setRGB(0,0,(int)maxX,(int)maxY,teren,0,(int)maxX);
+        g.drawImage(terenObraz,0,0,(int) maxX,(int) maxY,null);
     }
 
     /**
@@ -122,7 +154,7 @@ public class DrawingPanel extends JPanel {
     public void drawWaterLayer(Graphics2D g){
         int bunka;
         int bunkaNasledujici;
-        g.setColor(Color.blue);
+        g.setColor(new Color(0,120,200));
         Path2D water = new Path2D.Double();
         for (int i = 0; i < maxY-1; i++) {
             for (int y = 0; y < maxX-1; y++) {
@@ -174,11 +206,12 @@ public class DrawingPanel extends JPanel {
         g.rotate(Math.atan(dirFlow.y.doubleValue() / dirFlow.x.doubleValue()));
 
         g.setColor(Color.BLACK);
+        g.setFont(new Font("Calibri",Font.BOLD,18));
         g.drawString(name, 5, 15);
 
         g.setTransform(bezTransformu);
 
-        g.setColor(Color.MAGENTA);
+        g.setColor(new Color(255,255,0));
         drawArrow(posunutyBod, dirFlow, g);
 
     }
@@ -191,10 +224,11 @@ public class DrawingPanel extends JPanel {
        /* Se zakomentovaným minX/Y se celý obrázek zvláštně posouval, s 0 to funguje dobře */
         //minX = Simulator.getStart().x;
         //minY = Simulator.getStart().y;
+        minX = 0;
+        minY = velikostListy;
         maxX = Simulator.getDimension().x;
         maxY = Simulator.getDimension().y;
-        minX = 0;
-        minY = 0;
+
     }
 
     /**
@@ -231,5 +265,24 @@ public class DrawingPanel extends JPanel {
         return m;
     }
 
+    public void lista (Graphics g){
+        Graphics2D g2 = (Graphics2D) g;
+
+        LinearGradientPaint gradientPaint = new LinearGradientPaint(
+                new Point2D.Double(0,0),
+                new Point2D.Double(getWidth(),0),
+                new float[]{0,1},
+                new Color[]{Color.blue,new Color(31,231,72)}
+        );
+        g2.setPaint(gradientPaint);
+        g2.fillRect(0,0,getWidth(),velikostListy);
+        g2.translate(0,velikostListy-2);
+        g2.setColor(Color.DARK_GRAY);
+        g2.setFont(new Font("Calibri",Font.BOLD,20));
+        g2.drawString(minTeren+"m.n.m.",0,0);
+        g2.drawString(maxTeren+"m.n.m.",getWidth()-g2.getFontMetrics().stringWidth(maxTeren+"m.n.m."),0);
+
+
+    }
 
 }

@@ -2,10 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c98158c4-d738-4fcd-9c68-7fa86a183a21" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Cviceni8/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/../../Cviceni8/debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Run.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/Run.cmd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Run.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/dokumentace.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaterFlowSim.jar" beforeDir="false" afterPath="$PROJECT_DIR$/WaterFlowSim.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/allclasses-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/allclasses-index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/allpackages-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/allpackages-index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/constant-values.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/constant-values.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/deprecated-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/deprecated-list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/help-doc.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/help-doc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/index-all.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/index-all.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/member-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/member-search-index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/member-search-index.zip" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/member-search-index.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/overview-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/overview-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/package-search-index.zip" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/package-search-index.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/stylesheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/stylesheet.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/type-search-index.zip" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/type-search-index.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/Cell.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/Cell.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/Scenarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/Scenarios.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/Simulator.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/Simulator.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/Vector2D.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/Vector2D.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/WaterSourceUpdater.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/WaterSourceUpdater.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/WaterFlowSim_javadoc/waterflowsim/package-tree.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DrawingPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" afterDir="false" />
     </list>
@@ -64,29 +85,53 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="1115" y="286" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog" timestamp="1588158127818">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1115" y="286" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588158127818" />
     <state x="1253" y="379" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1585313248477">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1253" y="379" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1920.1040@0.0.1920.1040" timestamp="1585313248477" />
-    <state width="816" height="135" key="GridCell.Tab.0.bottom" timestamp="1585579427563">
+    <state width="912" height="135" key="GridCell.Tab.0.bottom" timestamp="1588259195930">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="816" height="135" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1585579427563" />
-    <state width="816" height="135" key="GridCell.Tab.0.center" timestamp="1585579427563">
+    <state width="912" height="135" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588259195930" />
+    <state width="912" height="135" key="GridCell.Tab.0.center" timestamp="1588259195930">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="816" height="135" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1585579427563" />
-    <state width="816" height="135" key="GridCell.Tab.0.left" timestamp="1585579427563">
+    <state width="912" height="135" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588259195930" />
+    <state width="912" height="135" key="GridCell.Tab.0.left" timestamp="1588259195930">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="816" height="135" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1585579427563" />
-    <state width="816" height="135" key="GridCell.Tab.0.right" timestamp="1585579427563">
+    <state width="912" height="135" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588259195930" />
+    <state width="912" height="135" key="GridCell.Tab.0.right" timestamp="1588259195930">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="816" height="135" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1585579427563" />
+    <state width="912" height="135" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588259195930" />
+    <state width="912" height="328" key="GridCell.Tab.1.bottom" timestamp="1588249051226">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="912" height="328" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588249051226" />
+    <state width="912" height="328" key="GridCell.Tab.1.center" timestamp="1588249051226">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="912" height="328" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588249051226" />
+    <state width="912" height="328" key="GridCell.Tab.1.left" timestamp="1588249051226">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="912" height="328" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588249051226" />
+    <state width="912" height="328" key="GridCell.Tab.1.right" timestamp="1588249051226">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="912" height="328" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588249051226" />
     <state x="1193" y="358" key="com.intellij.ide.util.TipDialog" timestamp="1585642444046">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1193" y="358" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585642444046" />
+    <state width="600" height="424" key="javadoc.popup" timestamp="1588156244231">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="600" height="424" key="javadoc.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1588156244231" />
   </component>
 </project>
