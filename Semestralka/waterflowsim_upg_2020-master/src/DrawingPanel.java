@@ -38,6 +38,7 @@ public class DrawingPanel extends JPanel {
     public double minTeren, maxTeren;
     /** Privátní proměnné celé třídy, ukládají barvu pro výškové zobrazení*/
     public static Color posledniBarva = new Color(0,100,200);
+    /** Privátní proměnné celé třídy, ukládají barvu pro výškové zobrazení*/
     public static Color prvniBarva = new Color(0,posledniBarva.getGreen(),0);
 
     /** Výška lišty*/
@@ -118,7 +119,7 @@ public class DrawingPanel extends JPanel {
     }
 
     /**
-     * Zatím nic nedělá
+     * Vykresluje barvu mapy podle vysky v danem bode
      * @param g grafický kontext
      */
     public void drawTerrain(Graphics2D g){
@@ -265,6 +266,10 @@ public class DrawingPanel extends JPanel {
         return m;
     }
 
+    /**
+     * Metoda vykresluje v horni casti barevnou listu (legendu), kde zobrazuje barvy podle vysky
+     * @param g graficky kontext
+     */
     public void lista (Graphics g){
         Graphics2D g2 = (Graphics2D) g;
 
@@ -281,8 +286,6 @@ public class DrawingPanel extends JPanel {
         g2.setFont(new Font("Calibri",Font.BOLD,20));
         g2.drawString(minTeren+"m.n.m.",0,0);
         g2.drawString(maxTeren+"m.n.m.",getWidth()-g2.getFontMetrics().stringWidth(maxTeren+"m.n.m."),0);
-
-
     }
 
 }

@@ -49,7 +49,10 @@ public class L01_SpusteniSimulatoru extends JFrame {
 
 	}
 
-
+	/**
+	 * Metoda vytvari dve tlacitka v dolni strane okna, a obsluhuje jejich funkci
+	 * @param win hlavni okno programu
+	 */
 	private static void makeGui(JFrame win) {
 		DrawingPanel panel = new DrawingPanel();
 
@@ -71,6 +74,5 @@ public class L01_SpusteniSimulatoru extends JFrame {
 
 		bttnZrychli.addActionListener(e -> v = v + zmena);
 	}
-
-
+	
 }
