@@ -5,22 +5,23 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
  * Třída, která má nastarost vykreslování podle simulátoru, používá se v hlavní třídě L01_SpusteniSimulatoru
- *
+ * @author Jan Pelikán
  */
 public class DrawingPanel extends JPanel {
     /**
      * Privátní proměnné celé třídy, velikost mapy (x a y)
      */
-    private double maxX, maxY;
+    public static double maxX, maxY;
     /**
      * Privátní proměnné celé třídy, začátek souřadnicového systému (inicializuju na nulu
      * (měli by být asi inicialiované na Simulator.getStart().x/y))
      */
-    private double minX, minY;
+    public static double minX, minY;
     /**
      * Privátní proměnná celé třídy, udává počet vodních zdrojů
      */
@@ -32,12 +33,25 @@ public class DrawingPanel extends JPanel {
     /**
      * Proměnná celé třídy, jde o hodnotu škálování
      */
-    double scale;
+    static double scale;
+    /** Privátní proměnná celé třídy, ukládá minimální a maximální výšku terénu*/
+    public static double minTeren, maxTeren;
+    /** Privátní proměnné celé třídy, ukládají barvu pro výškové zobrazení*/
+    public static Color posledniBarva = new Color(0, 25,200);
+    /** Privátní proměnné celé třídy, ukládají barvu pro výškové zobrazení*/
+    public static Color prvniBarva = new Color(0,posledniBarva.getGreen(),0);
+    /** Výška lišty*/
+    public static int velikostListy = 25;
     /**
-     * Proměnní celé třídy, posun souřadnicového systému
+     * Proměnná celé třídy, posun souřadnicového systému
      */
     int posunSouradniceX, posunSouradniceY;
-
+    /** DeltaX */
+    public static double deltaX = Simulator.getDelta().x;
+    /** DeltaY*/
+    public static double deltaY = Simulator.getDelta().y;
+    /** Hlavní čára šipky*/
+    public static Line2D hlavniCara;
 
     /**
      * "Poslední" metoda, která dává dohromady všechny metody nad ní, volá metodu drawWaterFlowState
@@ -88,7 +102,7 @@ public class DrawingPanel extends JPanel {
         double ky = vArrowX;
         kx *= 0.25;
         ky *= 0.25;
-        Line2D hlavniCara = new Line2D.Double(x1, y1, x2, y2);
+        hlavniCara = new Line2D.Double(x1, y1, x2, y2);
         g.draw(hlavniCara);
         Line2D horniSipkaCara = new Line2D.Double(x2, y2, x2 - vArrowX + kx, y2 - vArrowY + ky);
         g.draw(horniSipkaCara);
@@ -107,11 +121,36 @@ public class DrawingPanel extends JPanel {
     }
 
     /**
-     * Zatím nic nedělá
+     * Vykresluje barvu mapy podle vysky v danem bode
      * @param g grafický kontext
      */
     public void drawTerrain(Graphics2D g){
+        Cell[] cells = Simulator.getData();
+        minTeren = cells[0].getTerrainLevel();
+        maxTeren = cells[0].getTerrainLevel();
+        //hledám nejmenší a největší terén
+        for (Cell cell : cells) {
+            double pruchod = cell.getTerrainLevel();
+            if (pruchod < minTeren) {
+                minTeren = pruchod;
+            }
+            if (pruchod > maxTeren) {
+                maxTeren = pruchod;
+            }
+        }
 
+        int[] teren = new int[cells.length];
+        double rozdil = maxTeren-minTeren;
+
+        for (int i =0;i<cells.length;i++){
+            //cviceni6
+            int modra = (int) (cells[i].getTerrainLevel()/rozdil*posledniBarva.getBlue());
+            teren[i] = (modra<<8) | (posledniBarva.getGreen() << 2);
+        }
+
+        BufferedImage terenObraz = new BufferedImage((int)maxX,(int)maxY, BufferedImage.TYPE_3BYTE_BGR);
+        terenObraz.setRGB(0,0,(int)maxX,(int)maxY,teren,0,(int)maxX);
+        g.drawImage(terenObraz,0,0,(int) maxX,(int) maxY,null);
     }
 
     /**
@@ -122,7 +161,10 @@ public class DrawingPanel extends JPanel {
     public void drawWaterLayer(Graphics2D g){
         int bunka;
         int bunkaNasledujici;
-        g.setColor(Color.blue);
+        double vetsi = Math.max(deltaX,deltaY);
+        double mensi = Math.min(deltaX,deltaY);
+        double pomer = vetsi/mensi;
+        g.setColor(new Color(0,120,200));
         Path2D water = new Path2D.Double();
         for (int i = 0; i < maxY-1; i++) {
             for (int y = 0; y < maxX-1; y++) {
@@ -130,10 +172,27 @@ public class DrawingPanel extends JPanel {
                 bunkaNasledujici = (i + 1) * (int) maxX + (y + 1);
                 Cell bunka1 = Simulator.getData()[bunka];
                 Cell bunka2 = Simulator.getData()[bunkaNasledujici];
+
                 if (!bunka1.isDry()) {
                     if (!bunka2.isDry()) {
-                        water.moveTo(y + Simulator.getDelta().x, i + Simulator.getDelta().y);
-                        water.lineTo(y + Simulator.getDelta().x, i + Simulator.getDelta().y);
+                        if (vetsi == deltaX) {
+                            water.moveTo(y + Simulator.getDelta().x * pomer,
+                                    i + Simulator.getDelta().y);
+                            water.lineTo(y + Simulator.getDelta().x * pomer,
+                                    i + Simulator.getDelta().y);
+                        }
+                        if(vetsi == deltaY){
+                            water.moveTo(y + Simulator.getDelta().x,
+                                    i + Simulator.getDelta().y * pomer );
+                            water.lineTo(y + Simulator.getDelta().x,
+                                    i + Simulator.getDelta().y * pomer);
+                        }
+                        if (deltaY == deltaX){
+                            water.moveTo(y + Simulator.getDelta().x,
+                                    i + Simulator.getDelta().y);
+                            water.lineTo(y + Simulator.getDelta().x,
+                                    i + Simulator.getDelta().y);
+                        }
                     }
                 }
             }
@@ -151,7 +210,7 @@ public class DrawingPanel extends JPanel {
      */
     public void drawWaterSources(Graphics2D g){
         for (WaterSourceUpdater waterSourceUpdater: vodniZdroje) {
-            Point2D poziceSipky = new Point2D.Double((int)waterSourceUpdater.getIndex() % maxX, (int)waterSourceUpdater.getIndex() / maxX);
+            Point2D poziceSipky = new Point2D.Double(waterSourceUpdater.getIndex() % maxX, waterSourceUpdater.getIndex() / maxX);
             drawWaterFlowLabel(poziceSipky, Simulator.getGradient(waterSourceUpdater.getIndex()), waterSourceUpdater.getName(), g);
         }
     }
@@ -165,22 +224,25 @@ public class DrawingPanel extends JPanel {
      * @param g grafický kontext
      */
     public void drawWaterFlowLabel(Point2D position, Vector2D dirFlow, String name, Graphics2D g){
-        double posunX = position.getX() + 20;
-        double posunY = position.getY() + 2;
-        Point2D posunutyBod = new Point2D.Double(posunX ,posunY);
-
         AffineTransform bezTransformu = g.getTransform();
-        g.translate(posunX,posunY);
-        g.rotate(Math.atan(dirFlow.y.doubleValue() / dirFlow.x.doubleValue()));
+        g.translate((int)position.getX(),(int)position.getY());
+        double rotace = Math.atan(dirFlow.y.doubleValue() / dirFlow.x.doubleValue());
+        if(dirFlow.x.doubleValue()>0 && dirFlow.y.doubleValue()!=0){
+            rotace = rotace + Math.PI;
+        }
+        g.rotate(rotace);
+        g.setColor(new Color(255,255,0));
+        g.setFont(new Font("Calibri",Font.BOLD,18));
+        drawArrow(new Point2D.Double(0,0), new Vector2D(-1,0), g);
 
         g.setColor(Color.BLACK);
-        g.drawString(name, 5, 15);
-
+        if(dirFlow.x.doubleValue()>0){
+            g.rotate(Math.PI);
+            g.drawString(name, 5-g.getFontMetrics().stringWidth(name), 15);
+        } else {
+            g.drawString(name, 5, 15);
+        }
         g.setTransform(bezTransformu);
-
-        g.setColor(Color.MAGENTA);
-        drawArrow(posunutyBod, dirFlow, g);
-
     }
 
     /**
@@ -189,12 +251,13 @@ public class DrawingPanel extends JPanel {
      */
     public void computeModelDimensions(){
        /* Se zakomentovaným minX/Y se celý obrázek zvláštně posouval, s 0 to funguje dobře */
-        //minX = Simulator.getStart().x;
-        //minY = Simulator.getStart().y;
-        maxX = Simulator.getDimension().x;
-        maxY = Simulator.getDimension().y;
+       // minX = Simulator.getStart().x;
+       // minY = Simulator.getStart().y;
         minX = 0;
         minY = 0;
+        maxX = Simulator.getDimension().x;
+        maxY = Simulator.getDimension().y;
+
     }
 
     /**
@@ -222,14 +285,12 @@ public class DrawingPanel extends JPanel {
     /**
      * Metoda převede souřadnice modelu na souřadnice okna s využitím hodnot stavových
      * proměnných určených v metodě computeModel2WindowTransformation. Vrací bod m.
-     * ((metodu nikde nepoužívám, byla v doporučené struktuře, tak jsem ji udělal ale asi ji nepotřbeuju))
      * @param m Point2D bod
      * @return Změněný bod m z parametrů
      */
-    public Point2D model2window(Point2D m){
-        m.setLocation((m.getX() + 30) / (scale),(m.getY() - 30) / (scale));
+    public static Point2D model2window(Point2D m){
+        m.setLocation((int) (((m.getX() - minX) / scale) / deltaX),(int) (((m.getY() - minY) / scale) / deltaY));
         return m;
     }
-
 
 }

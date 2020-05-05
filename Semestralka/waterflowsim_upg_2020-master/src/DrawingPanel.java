@@ -16,12 +16,12 @@ public class DrawingPanel extends JPanel {
     /**
      * Privátní proměnné celé třídy, velikost mapy (x a y)
      */
-    private double maxX, maxY;
+    public static double maxX, maxY;
     /**
      * Privátní proměnné celé třídy, začátek souřadnicového systému (inicializuju na nulu
      * (měli by být asi inicialiované na Simulator.getStart().x/y))
      */
-    private double minX, minY;
+    public static double minX, minY;
     /**
      * Privátní proměnná celé třídy, udává počet vodních zdrojů
      */
@@ -46,6 +46,12 @@ public class DrawingPanel extends JPanel {
      * Proměnná celé třídy, posun souřadnicového systému
      */
     int posunSouradniceX, posunSouradniceY;
+    /** DeltaX */
+    public static double deltaX = Simulator.getDelta().x;
+    /** DeltaY*/
+    public static double deltaY = Simulator.getDelta().y;
+    /** Hlavní čára šipky*/
+    public static Line2D hlavniCara;
 
     /**
      * "Poslední" metoda, která dává dohromady všechny metody nad ní, volá metodu drawWaterFlowState
@@ -71,7 +77,6 @@ public class DrawingPanel extends JPanel {
         drawWaterFlowState(g2);
 
         g2.setTransform(puvodniTransformace);
-        //lista(g);
     }
 
     /**
@@ -97,7 +102,7 @@ public class DrawingPanel extends JPanel {
         double ky = vArrowX;
         kx *= 0.25;
         ky *= 0.25;
-        Line2D hlavniCara = new Line2D.Double(x1, y1, x2, y2);
+        hlavniCara = new Line2D.Double(x1, y1, x2, y2);
         g.draw(hlavniCara);
         Line2D horniSipkaCara = new Line2D.Double(x2, y2, x2 - vArrowX + kx, y2 - vArrowY + ky);
         g.draw(horniSipkaCara);
@@ -123,7 +128,7 @@ public class DrawingPanel extends JPanel {
         Cell[] cells = Simulator.getData();
         minTeren = cells[0].getTerrainLevel();
         maxTeren = cells[0].getTerrainLevel();
-
+        //hledám nejmenší a největší terén
         for (Cell cell : cells) {
             double pruchod = cell.getTerrainLevel();
             if (pruchod < minTeren) {
@@ -156,6 +161,9 @@ public class DrawingPanel extends JPanel {
     public void drawWaterLayer(Graphics2D g){
         int bunka;
         int bunkaNasledujici;
+        double vetsi = Math.max(deltaX,deltaY);
+        double mensi = Math.min(deltaX,deltaY);
+        double pomer = vetsi/mensi;
         g.setColor(new Color(0,120,200));
         Path2D water = new Path2D.Double();
         for (int i = 0; i < maxY-1; i++) {
@@ -167,15 +175,28 @@ public class DrawingPanel extends JPanel {
 
                 if (!bunka1.isDry()) {
                     if (!bunka2.isDry()) {
-                        water.moveTo( y+ Simulator.getDelta().x,
-                                i+Simulator.getDelta().y);
-                        water.lineTo( y+ Simulator.getDelta().x,
-                                i+ Simulator.getDelta().y);
+                        if (vetsi == deltaX) {
+                            water.moveTo(y + Simulator.getDelta().x * pomer,
+                                    i + Simulator.getDelta().y);
+                            water.lineTo(y + Simulator.getDelta().x * pomer,
+                                    i + Simulator.getDelta().y);
+                        }
+                        if(vetsi == deltaY){
+                            water.moveTo(y + Simulator.getDelta().x,
+                                    i + Simulator.getDelta().y * pomer );
+                            water.lineTo(y + Simulator.getDelta().x,
+                                    i + Simulator.getDelta().y * pomer);
+                        }
+                        if (deltaY == deltaX){
+                            water.moveTo(y + Simulator.getDelta().x,
+                                    i + Simulator.getDelta().y);
+                            water.lineTo(y + Simulator.getDelta().x,
+                                    i + Simulator.getDelta().y);
+                        }
                     }
                 }
             }
         }
-
         g.draw(water);
         if (pocetVodnichZdroju > 0) {
             drawWaterSources(g);
@@ -268,7 +289,7 @@ public class DrawingPanel extends JPanel {
      * @return Změněný bod m z parametrů
      */
     public static Point2D model2window(Point2D m){
-        m.setLocation((m.getX() + 30) / (scale),(m.getY() - 30) / (scale));
+        m.setLocation((int) (((m.getX() - minX) / scale) / deltaX),(int) (((m.getY() - minY) / scale) / deltaY));
         return m;
     }
 

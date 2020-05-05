@@ -2,10 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c98158c4-d738-4fcd-9c68-7fa86a183a21" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/jfreechart_1_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Legenda.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dokumentace.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../dokumentace.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/Build.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/Build.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/Run.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/Run.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/WaterFlowSim.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/WaterFlowSim.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/bin/DrawingPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/bin/DrawingPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/bin/L01_SpusteniSimulatoru$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/bin/L01_SpusteniSimulatoru$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/bin/L01_SpusteniSimulatoru.class" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/bin/L01_SpusteniSimulatoru.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/doc/dokumentace.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/doc/dokumentace.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/src/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/src/DrawingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pelikanj/src/L01_SpusteniSimulatoru.java" beforeDir="false" afterPath="$PROJECT_DIR$/../pelikanj/src/L01_SpusteniSimulatoru.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UPG2020.iml" beforeDir="false" afterPath="$PROJECT_DIR$/UPG2020.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Build.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/Build.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Run.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/Run.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Run.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DrawingPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" afterDir="false" />
     </list>
@@ -40,6 +51,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="inlay.hints.JAVA" />
   </component>
   <component name="RunManager">
     <configuration name="L01_SpusteniSimulatoru" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -115,25 +127,25 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1099" y="247" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588582450842" />
-    <state width="1172" height="133" key="GridCell.Tab.0.bottom" timestamp="1588678309506">
+    <state width="998" height="133" key="GridCell.Tab.0.bottom" timestamp="1588711293295">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1172" height="133" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588678309506" />
+    <state width="998" height="133" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588711293295" />
     <state width="982" height="128" key="GridCell.Tab.0.bottom/0.23.1280.709@0.23.1280.709" timestamp="1588499935606" />
-    <state width="1172" height="133" key="GridCell.Tab.0.center" timestamp="1588678309506">
+    <state width="998" height="133" key="GridCell.Tab.0.center" timestamp="1588711293294">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1172" height="133" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588678309506" />
+    <state width="998" height="133" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588711293294" />
     <state width="982" height="128" key="GridCell.Tab.0.center/0.23.1280.709@0.23.1280.709" timestamp="1588499935604" />
-    <state width="1172" height="133" key="GridCell.Tab.0.left" timestamp="1588678309506">
+    <state width="998" height="133" key="GridCell.Tab.0.left" timestamp="1588711293294">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1172" height="133" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588678309506" />
+    <state width="998" height="133" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588711293294" />
     <state width="982" height="128" key="GridCell.Tab.0.left/0.23.1280.709@0.23.1280.709" timestamp="1588499935603" />
-    <state width="1172" height="133" key="GridCell.Tab.0.right" timestamp="1588678309506">
+    <state width="998" height="133" key="GridCell.Tab.0.right" timestamp="1588711293294">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1172" height="133" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588678309506" />
+    <state width="998" height="133" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588711293294" />
     <state width="982" height="128" key="GridCell.Tab.0.right/0.23.1280.709@0.23.1280.709" timestamp="1588499935605" />
     <state width="848" height="372" key="GridCell.Tab.1.bottom" timestamp="1588441788673">
       <screen x="0" y="23" width="1280" height="709" />
@@ -159,10 +171,10 @@
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="436" y="95" key="RollbackChangesDialog/0.23.1280.709@0.23.1280.709" timestamp="1588499588293" />
-    <state x="873" y="80" key="SettingsEditor" timestamp="1588670421840">
+    <state x="873" y="80" key="SettingsEditor" timestamp="1588687739379">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="873" y="80" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1588670421840" />
+    <state x="873" y="80" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1588687739379" />
     <state x="1193" y="358" key="com.intellij.ide.util.TipDialog" timestamp="1585642444046">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

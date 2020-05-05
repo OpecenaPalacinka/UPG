@@ -1,6 +1,7 @@
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
@@ -24,14 +25,23 @@ import java.util.TimerTask;
  * @version 1.2.35
  */
 public class L01_SpusteniSimulatoru extends JFrame {
+	/** Vytvoření Timeru */
 	public static Timer myTimer = new Timer();
+	/** Proměnná na měnění rychlosti metody nextStep */
 	static double v = 0.002;
-	static double zmena = 0.0005;
+	/** Konstanta o kterou se mění v a rychlost nextStep */
+	static final double zmena = 0.0005;
+	/** Proměnná čas, která se stará o správné vykreslení grafu */
 	static double cas = 0;
+	/** Proměnná používaná na redukování ukládání dat */
 	static int redukce=0;
+	/** Vytvoření pole datasetů */
 	public static DefaultCategoryDataset[] datasets;
+	/** Vytvoření buttonu pro účely zjišťování velikosti*/
 	static JButton bttnZrychli = new JButton("Zrychli");
+	/** Bod, kde byla stisknuta myš pro obdélníkový výběr */
 	public static Point2D pressed;
+	/** Boolean, stará se o pauzu a unpauzu */
 	static boolean pauza = false;
 
 	/**
@@ -72,9 +82,11 @@ public class L01_SpusteniSimulatoru extends JFrame {
 				if (!pauza){
 				Simulator.nextStep(v);
 				cas += v;
+				int docasnyCas = (int)(cas*1000);
+				double finalCas = ((double)docasnyCas)/1000;
 				if (redukce%10 == 0){
 					for (int i = 0; i < Simulator.getData().length; i++) {
-						datasets[i].addValue((Number)Simulator.getData()[i].getWaterLevel(),"BUŇKA",cas);
+						datasets[i].addValue((Number)Simulator.getData()[i].getWaterLevel(),"Buňka",finalCas);
 					}
 				}
 				redukce++;
@@ -92,11 +104,11 @@ public class L01_SpusteniSimulatoru extends JFrame {
 	 * @return nový graf
 	 */
 	public static JFreeChart makePointChart(MouseEvent event){
-		Point2D pozice = DrawingPanel.model2window(new Point2D.Double(event.getX(),event.getY()));
-		int presnaPozice = (int)((pozice.getY()*Simulator.getDimension().x) + pozice.getX());
+		int presnaPozice = (event.getY()*Simulator.getDimension().x) + event.getX();
+		//Cviceni s grafama
 		DefaultCategoryDataset dataset = datasets[presnaPozice];
 
-		JFreeChart chart = ChartFactory.createLineChart("Výška vody v daném bodě","Čas simulace v s.",
+		JFreeChart chart = ChartFactory.createLineChart("Výška vody v daném bodě","Čas simulace",
 				"Výška hladiny vody",dataset);
 
 		CategoryPlot plot = chart.getCategoryPlot();
@@ -104,7 +116,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		plot.setRangeGridlinePaint(Color.DARK_GRAY);
 		CategoryItemRenderer categoryItemRenderer = plot.getRenderer();
 		NumberFormat nf = NumberFormat.getNumberInstance();
-		nf.setMaximumFractionDigits(2);
+		nf.setMaximumFractionDigits(3);
 		categoryItemRenderer.setDefaultItemLabelGenerator(
 				new StandardCategoryItemLabelGenerator(
 						"{2}", nf));
@@ -120,18 +132,19 @@ public class L01_SpusteniSimulatoru extends JFrame {
 	 */
 	public static JFreeChart makeAreaChart(MouseEvent eventKonec) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
 		int counter = datasets[0].getColumnCount();
 		int zacatekX = Math.min(eventKonec.getX(),(int) pressed.getX());
 		int zacatekY = Math.min(eventKonec.getY(),(int) pressed.getY());
 		int konecX = Math.max(eventKonec.getX(),(int) pressed.getX());
 		int konecY = Math.max(eventKonec.getY(),(int) pressed.getY());
+
 		for (int i = 0; i < counter; i++) {
 			double pomocnej = 0;
 			int pocitadlo =0;
 			for (int j = zacatekX; j < konecX ; j++) {
 				for (int k = zacatekY; k < konecY; k++) {
-					Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,k));
-					int presnaPozice = (int)((pozice.getY()*Simulator.getDimension().x) +pozice.getX());
+					int presnaPozice = (k*Simulator.getDimension().x) +j;
 					if ((double)datasets[presnaPozice].getValue(0,i) > 0){
 						pomocnej += (double) datasets[presnaPozice].getValue(0,i);
 						pocitadlo++;
@@ -144,16 +157,17 @@ public class L01_SpusteniSimulatoru extends JFrame {
 				dataset.addValue((Number)(pomocnej/pocitadlo),"Oblast",datasets[0].getColumnKey(i));
 			}
 		}
+
 		datasets[0].addChangeListener(new DatasetChangeListener() {
 			int newCounter = counter;
 			@Override
 			public void datasetChanged(DatasetChangeEvent datasetChangeEvent) {
 				double pomocnej = 0;
 				int pocitadlo = 0;
+
 				for (int i = zacatekX; i < konecX ; i++) {
 					for (int j = zacatekY; j < konecY; j++) {
-						Point2D pozice = DrawingPanel.model2window(new Point2D.Double(i, j));
-						int presnaPozice = (int) ((pozice.getY() * Simulator.getDimension().x) + pozice.getX());
+						int presnaPozice = (i * Simulator.getDimension().x) + j;
 						if ((double) datasets[presnaPozice].getValue(0, newCounter - 1) > 0) {
 							pomocnej += (double) datasets[presnaPozice].getValue(0, newCounter - 1);
 							pocitadlo++;
@@ -168,13 +182,15 @@ public class L01_SpusteniSimulatoru extends JFrame {
 				newCounter++;
 			}
 		});
+
+		//Cviceni s grafama
 	JFreeChart oblastChart = ChartFactory.createLineChart("Výška hladiny v oblasti","Čas simulace","Výška hladiny",dataset);
 	CategoryPlot plot = oblastChart.getCategoryPlot();
 	plot.setBackgroundPaint(Color.WHITE);
 	plot.setRangeGridlinePaint(Color.DARK_GRAY);
 	CategoryItemRenderer categoryItemRenderer = plot.getRenderer();
 	NumberFormat nf = NumberFormat.getNumberInstance();
-	nf.setMaximumFractionDigits(2);
+	nf.setMaximumFractionDigits(3);
 	categoryItemRenderer.setDefaultItemLabelGenerator(
 				new StandardCategoryItemLabelGenerator(
 						"{2}", nf));
@@ -237,7 +253,11 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		JButton bttnPokrac = new JButton("Pokračovat");
 		JButton bttnLegen = new JButton("Legenda");
 
-		Dimension velikostOkna = new Dimension(Simulator.getDimension().x, (Simulator.getDimension().y + bttnZrychli.getHeight()));
+		Dimension velikostOkna;
+
+
+		velikostOkna = new Dimension(Simulator.getDimension().x, (Simulator.getDimension().y + bttnZrychli.getHeight()));
+
 		panel.setPreferredSize(velikostOkna);
 		win.setLayout(new BorderLayout());
 		win.add(panel, BorderLayout.CENTER);
@@ -249,7 +269,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		buttons.add(bttnPokrac);
 		buttons.add(bttnLegen);
 
-		win.add(buttons, BorderLayout.NORTH);
+		win.add(buttons, BorderLayout.SOUTH);
 
 		bttnZpomal.addActionListener(actionEvent -> {
 			if(v-zmena<1e-8){
