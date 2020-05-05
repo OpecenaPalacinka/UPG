@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c98158c4-d738-4fcd-9c68-7fa86a183a21" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/jfreechart_1_5_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Legenda.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UPG2020.iml" beforeDir="false" afterPath="$PROJECT_DIR$/UPG2020.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DrawingPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/L01_SpusteniSimulatoru.java" afterDir="false" />
     </list>
@@ -31,7 +34,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/jfreechart-1.5.0.jar!/" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RunManager">
@@ -78,17 +85,24 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="648" y="94" key="#com.intellij.ide.util.MemberChooser" timestamp="1588441422976">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state x="972" y="104" key="#com.intellij.ide.util.MemberChooser" timestamp="1588675271039">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="972" y="104" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1588675271039" />
     <state x="648" y="94" key="#com.intellij.ide.util.MemberChooser/0.23.1280.709@0.23.1280.709" timestamp="1588441422976" />
+    <state x="1136" y="307" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1588607517381">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1136" y="307" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588607517381" />
     <state x="1115" y="286" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog" timestamp="1588158127818">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -97,25 +111,29 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1253" y="379" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1920.1040@0.0.1920.1040" timestamp="1585313248477" />
-    <state width="982" height="128" key="GridCell.Tab.0.bottom" timestamp="1588499935606">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state x="1099" y="247" key="FileChooserDialogImpl" timestamp="1588582450842">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="912" height="135" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588259195930" />
+    <state x="1099" y="247" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588582450842" />
+    <state width="1172" height="133" key="GridCell.Tab.0.bottom" timestamp="1588678309506">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1172" height="133" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588678309506" />
     <state width="982" height="128" key="GridCell.Tab.0.bottom/0.23.1280.709@0.23.1280.709" timestamp="1588499935606" />
-    <state width="982" height="128" key="GridCell.Tab.0.center" timestamp="1588499935604">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state width="1172" height="133" key="GridCell.Tab.0.center" timestamp="1588678309506">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="912" height="135" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588259195930" />
+    <state width="1172" height="133" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588678309506" />
     <state width="982" height="128" key="GridCell.Tab.0.center/0.23.1280.709@0.23.1280.709" timestamp="1588499935604" />
-    <state width="982" height="128" key="GridCell.Tab.0.left" timestamp="1588499935603">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state width="1172" height="133" key="GridCell.Tab.0.left" timestamp="1588678309506">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="912" height="135" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588259195930" />
+    <state width="1172" height="133" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588678309506" />
     <state width="982" height="128" key="GridCell.Tab.0.left/0.23.1280.709@0.23.1280.709" timestamp="1588499935603" />
-    <state width="982" height="128" key="GridCell.Tab.0.right" timestamp="1588499935605">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state width="1172" height="133" key="GridCell.Tab.0.right" timestamp="1588678309506">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="912" height="135" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588259195930" />
+    <state width="1172" height="133" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588678309506" />
     <state width="982" height="128" key="GridCell.Tab.0.right/0.23.1280.709@0.23.1280.709" timestamp="1588499935605" />
     <state width="848" height="372" key="GridCell.Tab.1.bottom" timestamp="1588441788673">
       <screen x="0" y="23" width="1280" height="709" />
@@ -141,14 +159,22 @@
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="436" y="95" key="RollbackChangesDialog/0.23.1280.709@0.23.1280.709" timestamp="1588499588293" />
+    <state x="873" y="80" key="SettingsEditor" timestamp="1588670421840">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="873" y="80" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1588670421840" />
     <state x="1193" y="358" key="com.intellij.ide.util.TipDialog" timestamp="1585642444046">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1193" y="358" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585642444046" />
-    <state width="400" height="290" key="javadoc.popup" timestamp="1588442424417">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state x="1215" y="477" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588610774084">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="600" height="424" key="javadoc.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1588156244231" />
+    <state x="1215" y="477" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1588610774084" />
+    <state width="600" height="424" key="javadoc.popup" timestamp="1588669162695">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="600" height="424" key="javadoc.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1588669162695" />
     <state width="400" height="290" key="javadoc.popup/0.23.1280.709@0.23.1280.709" timestamp="1588442424417" />
   </component>
 </project>
