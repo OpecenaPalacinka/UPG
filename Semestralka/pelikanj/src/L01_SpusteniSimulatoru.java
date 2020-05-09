@@ -51,7 +51,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 	 */
 	public static void main(String[] args) {
 		
-		if (args.length > 0 && Integer.parseInt(args[0])>3){
+		if (args.length > 0 && Integer.parseInt(args[0])>Simulator.getScenarios().length){
 			System.out.println("Zadali jste moc velké číslo, spouštím prvním scénář!");
 			Simulator.runScenario(0);
 		} else if (args.length > 0){
