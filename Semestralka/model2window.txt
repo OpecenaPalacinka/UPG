@@ -1,0 +1,10 @@
+/**
+     * Metoda převede souřadnice modelu na souřadnice okna s využitím hodnot stavových
+     * proměnných určených v metodě computeModel2WindowTransformation. Vrací bod m.
+     * @param m Point2D bod
+     * @return Změněný bod m z parametrů
+     */
+    public static Point2D model2window(Point2D m){
+        m.setLocation((int) (((m.getX() - minX) / scale) / deltaX),(int) (((m.getY() - minY) / scale) / deltaY));
+        return m;
+    }

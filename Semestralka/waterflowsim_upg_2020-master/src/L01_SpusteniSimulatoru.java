@@ -104,7 +104,9 @@ public class L01_SpusteniSimulatoru extends JFrame {
 	 * @return nový graf
 	 */
 	public static JFreeChart makePointChart(MouseEvent event){
-		int presnaPozice = (event.getY()*Simulator.getDimension().x) + event.getX();
+		//Point2D pozice = DrawingPanel.model2window(event.getPoint());
+		//int presnaPozice = (int) ((pozice.getY()*Simulator.getDimension().x) + pozice.getX());
+		int presnaPozice = (int) (((event.getY()-75)*(Simulator.getDimension().x)) + event.getX()-75);
 		//Cviceni s grafama
 		DefaultCategoryDataset dataset = datasets[presnaPozice];
 
@@ -144,7 +146,9 @@ public class L01_SpusteniSimulatoru extends JFrame {
 			int pocitadlo =0;
 			for (int j = zacatekX; j < konecX ; j++) {
 				for (int k = zacatekY; k < konecY; k++) {
-					int presnaPozice = (k*Simulator.getDimension().x) +j;
+					//Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,k));
+					//int presnaPozice = (int) ((pozice.getY()*Simulator.getDimension().x) +pozice.getX());
+					int presnaPozice = (int) (((k-75)*Simulator.getDimension().x) + (j-75));
 					if ((double)datasets[presnaPozice].getValue(0,i) > 0){
 						pomocnej += (double) datasets[presnaPozice].getValue(0,i);
 						pocitadlo++;
@@ -167,7 +171,9 @@ public class L01_SpusteniSimulatoru extends JFrame {
 
 				for (int i = zacatekX; i < konecX ; i++) {
 					for (int j = zacatekY; j < konecY; j++) {
-						int presnaPozice = (i * Simulator.getDimension().x) + j;
+						//Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,i));
+						//int presnaPozice = (int) ((pozice.getY() * Simulator.getDimension().x) + pozice.getX());
+						int presnaPozice = (int) (((i-75)*Simulator.getDimension().x) + (j-75));
 						if ((double) datasets[presnaPozice].getValue(0, newCounter - 1) > 0) {
 							pomocnej += (double) datasets[presnaPozice].getValue(0, newCounter - 1);
 							pocitadlo++;
@@ -256,7 +262,8 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		Dimension velikostOkna;
 
 
-		velikostOkna = new Dimension(Simulator.getDimension().x, (Simulator.getDimension().y + bttnZrychli.getHeight()));
+		velikostOkna = new Dimension(Simulator.getDimension().x+150,
+				(Simulator.getDimension().y + bttnZrychli.getHeight()+150));
 
 		panel.setPreferredSize(velikostOkna);
 		win.setLayout(new BorderLayout());
