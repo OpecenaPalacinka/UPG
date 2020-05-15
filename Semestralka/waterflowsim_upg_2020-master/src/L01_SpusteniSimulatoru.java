@@ -58,7 +58,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 			Simulator.runScenario(Integer.parseInt(args[0]));
 		}
 		else {
-			Simulator.runScenario(0);
+			Simulator.runScenario(6);
 		}
 
 		JFrame jf = new JFrame();
@@ -106,7 +106,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 	public static JFreeChart makePointChart(MouseEvent event){
 		//Point2D pozice = DrawingPanel.model2window(event.getPoint());
 		//int presnaPozice = (int) ((pozice.getY()*Simulator.getDimension().x) + pozice.getX());
-		int presnaPozice = (int) (((event.getY()-75)*(Simulator.getDimension().x)) + event.getX()-75);
+		int presnaPozice = (int) (((event.getY()-DrawingPanel.posunSouradniceY)*(Simulator.getDimension().x)) + event.getX()-DrawingPanel.posunSouradniceX);
 		//Cviceni s grafama
 		DefaultCategoryDataset dataset = datasets[presnaPozice];
 
@@ -148,7 +148,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 				for (int k = zacatekY; k < konecY; k++) {
 					//Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,k));
 					//int presnaPozice = (int) ((pozice.getY()*Simulator.getDimension().x) +pozice.getX());
-					int presnaPozice = (int) (((k-75)*Simulator.getDimension().x) + (j-75));
+					int presnaPozice = (int) (((k-DrawingPanel.posunSouradniceY)*Simulator.getDimension().x) + (j-DrawingPanel.posunSouradniceX));
 					if ((double)datasets[presnaPozice].getValue(0,i) > 0){
 						pomocnej += (double) datasets[presnaPozice].getValue(0,i);
 						pocitadlo++;
@@ -173,7 +173,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 					for (int j = zacatekY; j < konecY; j++) {
 						//Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,i));
 						//int presnaPozice = (int) ((pozice.getY() * Simulator.getDimension().x) + pozice.getX());
-						int presnaPozice = (int) (((i-75)*Simulator.getDimension().x) + (j-75));
+						int presnaPozice = (int) (((i-DrawingPanel.posunSouradniceY)*Simulator.getDimension().x) + (j-DrawingPanel.posunSouradniceX));
 						if ((double) datasets[presnaPozice].getValue(0, newCounter - 1) > 0) {
 							pomocnej += (double) datasets[presnaPozice].getValue(0, newCounter - 1);
 							pocitadlo++;
@@ -261,9 +261,13 @@ public class L01_SpusteniSimulatoru extends JFrame {
 
 		Dimension velikostOkna;
 
-
-		velikostOkna = new Dimension(Simulator.getDimension().x+150,
-				(Simulator.getDimension().y + bttnZrychli.getHeight()+150));
+		if (DrawingPanel.velikostOkna) {
+			velikostOkna = new Dimension((int)(Simulator.getDimension().x *1.1),
+					(int) (Simulator.getDimension().y*1.1 + bttnZrychli.getHeight()));
+		} else {
+			velikostOkna = new Dimension(Simulator.getDimension().x ,
+					(Simulator.getDimension().y + bttnZrychli.getHeight()));
+		}
 
 		panel.setPreferredSize(velikostOkna);
 		win.setLayout(new BorderLayout());

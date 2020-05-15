@@ -3,7 +3,6 @@ import waterflowsim.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
@@ -23,10 +22,6 @@ public class DrawingPanel extends JPanel {
      */
     public static double minX, minY;
     /**
-     * Privátní proměnná celé třídy, udává počet vodních zdrojů
-     */
-    private int pocetVodnichZdroju = Simulator.getWaterSources().length;
-    /**
      * Privátní proměnná celé třídy, vytváří pole se zdroji vody
      */
     private WaterSourceUpdater[] vodniZdroje = Simulator.getWaterSources();
@@ -45,7 +40,7 @@ public class DrawingPanel extends JPanel {
     /**
      * Proměnná celé třídy, posun souřadnicového systému
      */
-    int posunSouradniceX, posunSouradniceY;
+    public static int posunSouradniceX, posunSouradniceY;
     /** DeltaX */
     public static double deltaX = Simulator.getDelta().x;
     /** DeltaY*/
@@ -122,6 +117,7 @@ public class DrawingPanel extends JPanel {
 
     /**
      * Vykresluje barvu mapy podle vysky v danem bode
+     * Inspirováno cvičením.
      * @param g grafický kontext
      */
     public void drawTerrain(Graphics2D g){
@@ -150,57 +146,40 @@ public class DrawingPanel extends JPanel {
 
         BufferedImage terenObraz = new BufferedImage((int)maxX,(int)maxY, BufferedImage.TYPE_3BYTE_BGR);
         terenObraz.setRGB(0,0,(int)maxX,(int)maxY,teren,0,(int)maxX);
-        g.drawImage(terenObraz,0,0,(int) maxX,(int) maxY,null);
+        //g.drawImage(terenObraz,0,0, (int) (maxX*Math.abs(deltaX)),
+        //                    (int) (maxY*Math.abs(deltaY)),null);
+        g.drawImage(terenObraz,0,0, (int) (maxX),
+                    (int) (maxY),null);
     }
 
     /**
      * Vykresluje vodní plochy hlavně pomocí metody isDry, volá zde metodu drawWaterSources pro
      * vykreslení hlavních vodních zdrojů
+     * Celá metoda je na principu posunu bitových operátorů, stejně jako metoda drawTerrain.
      * @param g grafický kontext
      */
     public void drawWaterLayer(Graphics2D g){
-        int bunka;
-        int bunkaNasledujici;
-        double vetsi = Math.max(deltaX,deltaY);
-        double mensi = Math.min(deltaX,deltaY);
-        double pomer = vetsi/mensi;
-        g.setColor(new Color(0,120,200));
-        Path2D water = new Path2D.Double();
-        for (int i = 0; i < maxY-1; i++) {
-            for (int y = 0; y < maxX-1; y++) {
-                bunka = i * (int) maxX + y;
-                bunkaNasledujici = (i + 1) * (int) maxX + (y + 1);
-                Cell bunka1 = Simulator.getData()[bunka];
-                Cell bunka2 = Simulator.getData()[bunkaNasledujici];
+        Cell[] cells = Simulator.getData();
+        int[] voda = new int[cells.length];
+        int prvniA;
 
-                if (!bunka1.isDry()) {
-                    if (!bunka2.isDry()) {
-                        if (vetsi == deltaX) {
-                            water.moveTo(y + Simulator.getDelta().x * pomer,
-                                    i + Simulator.getDelta().y);
-                            water.lineTo(y + Simulator.getDelta().x * pomer,
-                                    i + Simulator.getDelta().y);
-                        }
-                        if(vetsi == deltaY){
-                            water.moveTo(y + Simulator.getDelta().x,
-                                    i + Simulator.getDelta().y * pomer );
-                            water.lineTo(y + Simulator.getDelta().x,
-                                    i + Simulator.getDelta().y * pomer);
-                        }
-                        if (deltaY == deltaX){
-                            water.moveTo(y + Simulator.getDelta().x,
-                                    i + Simulator.getDelta().y);
-                            water.lineTo(y + Simulator.getDelta().x,
-                                    i + Simulator.getDelta().y);
-                        }
-                    }
-                }
+        for (int i = 0; i < cells.length;i++){
+            if (cells[i].isDry()){
+                prvniA = 0;
+            } else {
+                prvniA = 255;
             }
+            voda[i] = (prvniA << 24) | (100<<16) | (100<<8) | 196;
         }
-        g.draw(water);
-        if (pocetVodnichZdroju > 0) {
-            drawWaterSources(g);
-        }
+
+        BufferedImage teren = new BufferedImage((int)maxX,(int)maxY,BufferedImage.TYPE_4BYTE_ABGR);
+        teren.setRGB(0,0, (int) maxX, (int) maxY,voda,0, (int) maxX);
+        //g.drawImage(teren,0,0, (int) (maxX*Math.abs(deltaX)),
+        //                (int) (maxY*Math.abs(deltaY)),null);
+        g.drawImage(teren,0,0, (int) (maxX),
+                (int) (maxY),null);
+
+        drawWaterSources(g);
     }
 
     /**
@@ -257,7 +236,6 @@ public class DrawingPanel extends JPanel {
         minY = 0;
         maxX = Simulator.getDimension().x;
         maxY = Simulator.getDimension().y;
-
     }
 
     /**
@@ -271,15 +249,16 @@ public class DrawingPanel extends JPanel {
      */
     public void computeModel2WindowTransformation(int width, int height){
         computeModelDimensions();
-        double scalex = width / (maxX - minX);
-        double scaley = height / (maxY - minY);
-        scale = Math.min(scalex, scaley);
 
-        int nimW = (int) ((maxX - minX) * scale);
-        int nimH = (int) ((maxY - minY) * scale);
+        width -= 150;
+        height -= 150;
 
-        posunSouradniceX = (width - nimW) / 2;
-        posunSouradniceY = (height - nimH) / 2;
+        double scaleX = width/(maxX-minX);
+        double scaleY = height/(maxY-minY);
+        scale = Math.min(scaleX, scaleY);
+
+        posunSouradniceX = (width-((int) ((maxX-minX)*scale)))/2+75;
+        posunSouradniceY = (height-((int) ((maxY-minY)*scale)))/2+75;
     }
 
     /**
@@ -289,7 +268,7 @@ public class DrawingPanel extends JPanel {
      * @return Změněný bod m z parametrů
      */
     public static Point2D model2window(Point2D m){
-        m.setLocation((int) (((m.getX() - minX) / scale) / deltaX),(int) (((m.getY() - minY) / scale) / deltaY));
+        m.setLocation((int) (((m.getX()-minX)/scale)/deltaX),(int)(((m.getY()-minY)/scale)/deltaY));
         return m;
     }
 
