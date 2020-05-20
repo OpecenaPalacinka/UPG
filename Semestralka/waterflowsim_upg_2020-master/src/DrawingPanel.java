@@ -42,14 +42,15 @@ public class DrawingPanel extends JPanel {
      */
     public static int posunSouradniceX, posunSouradniceY;
     /** DeltaX */
-    public static double deltaX = Simulator.getDelta().x;
+    public static double deltaX = Math.abs(Simulator.getDelta().x);
     /** DeltaY*/
-    public static double deltaY = Simulator.getDelta().y;
+    public static double deltaY = Math.abs(Simulator.getDelta().y);
     /** Hlavní čára šipky*/
     public static Line2D hlavniCara;
 
-    public double deltaScale;
-    public static boolean velikostOkna = false;
+    public static int sirka,vyska;
+
+
 
     /**
      * "Poslední" metoda, která dává dohromady všechny metody nad ní, volá metodu drawWaterFlowState
@@ -62,33 +63,17 @@ public class DrawingPanel extends JPanel {
         Graphics2D g2 = (Graphics2D)g;
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
-
-
         computeModel2WindowTransformation(this.getWidth(),this.getHeight());
-        drawWaterFlowState(g2);
+
         if(scale > 1) {
             g2.setStroke(new BasicStroke(2));
         }
-        if(hlavniCara.getX2()<minX || hlavniCara.getY2()<minY){
-            int sirka = (int) (this.getWidth() *0.9);
-            int vyska = (int) (this.getHeight() *0.9);
-            velikostOkna = true;
-            posunSouradniceX = (int) ((sirka- ((int) ((maxX-minX)*scale)))/2*deltaScale+ (this.getWidth()*1.1));
-            posunSouradniceY = (int) ((vyska- ((int) ((maxY-minY)*scale)))/2*deltaScale+ (this.getHeight()*1.1));
-        } else if(hlavniCara.getX2()>maxXDelta || hlavniCara.getY2()>maxYDelta){
-            int sirka = (int) (this.getWidth() *0.9);
-            int vyska = (int) (this.getHeight() *0.9);
-            velikostOkna = true;
-            posunSouradniceX = (int) ((sirka- ((int) ((maxX-minX)*scale)))/2*deltaScale+ (this.getWidth()*1.1));
-            posunSouradniceY = (int) ((vyska- ((int) ((maxY-minY)*scale)))/2*deltaScale+ (this.getHeight()*1.1));
-        }
+
 
         AffineTransform puvodniTransformace = g2.getTransform();
         g2.translate(posunSouradniceX, posunSouradniceY);
         g2.scale(scale, scale);
-
-
-
+        drawWaterFlowState(g2);
 
         g2.setTransform(puvodniTransformace);
     }
@@ -165,8 +150,6 @@ public class DrawingPanel extends JPanel {
 
         BufferedImage terenObraz = new BufferedImage((int)maxX,(int)maxY, BufferedImage.TYPE_3BYTE_BGR);
         terenObraz.setRGB(0,0,(int)maxX, (int)maxY, teren,0,(int)maxX);
-        //g.drawImage(terenObraz,0,0, (int) (maxX*Math.abs(deltaX)),
-        //                    (int) (maxY*Math.abs(deltaY)),null);
         g.drawImage(terenObraz,0,0, (int) (maxXDelta),
                     (int) (maxYDelta),null);
     }
@@ -193,8 +176,6 @@ public class DrawingPanel extends JPanel {
 
         BufferedImage teren = new BufferedImage((int)maxX,(int)maxY,BufferedImage.TYPE_4BYTE_ABGR);
         teren.setRGB(0,0, (int) maxX, (int) maxY,voda,0, (int) maxX);
-        //g.drawImage(teren,0,0, (int) (maxX*Math.abs(deltaX)),
-        //                (int) (maxY*Math.abs(deltaY)),null);
         g.drawImage(teren,0,0, (int) (maxXDelta),
                 (int) (maxYDelta),null);
 
@@ -230,8 +211,9 @@ public class DrawingPanel extends JPanel {
         }
         g.rotate(rotace);
         g.setColor(new Color(255,255,0));
-        g.setFont(new Font("Calibri",Font.BOLD,18));
-        drawArrow(new Point2D.Double(0,0), new Vector2D(-1,0), g);
+        g.setFont(new Font("Calibri",Font.BOLD,13));
+        drawArrow(new Point2D.Double(0,0), new Vector2D(-0.9,0), g);
+
 
         g.setColor(Color.BLACK);
         if(dirFlow.x.doubleValue()>0){
@@ -248,19 +230,12 @@ public class DrawingPanel extends JPanel {
      * stavových proměnných.
      */
     public void computeModelDimensions(){
-       /* Se zakomentovaným minX/Y se celý obrázek zvláštně posouval, s 0 to funguje dobře */
-       // minX = Simulator.getStart().x;
-       // minY = Simulator.getStart().y;
         minX = 0;
         minY = 0;
         maxX = Simulator.getDimension().x;
         maxY = Simulator.getDimension().y;
-
         maxXDelta = Simulator.getDimension().x;
         maxYDelta = Simulator.getDimension().y;
-
-        double deltaX = Math.abs(Simulator.getDelta().x);
-        double deltaY = Math.abs(Simulator.getDelta().y);
 
         if(deltaX > deltaY)
         {
@@ -270,6 +245,7 @@ public class DrawingPanel extends JPanel {
         {
             maxYDelta = maxY *  (deltaY / deltaX);
         }
+
     }
 
     /**
@@ -283,25 +259,15 @@ public class DrawingPanel extends JPanel {
      */
     public void computeModel2WindowTransformation(int width, int height){
         computeModelDimensions();
-
-        double widthToMap = width / maxXDelta;
-        if(maxYDelta * widthToMap <= height)
-        {
-            maxXDelta = width;
-            maxYDelta *= widthToMap;
-        }
-        else
-        {
-            double hieghtToMap = height / maxYDelta;
-            maxYDelta = height;
-            maxXDelta *= hieghtToMap;
-        }
-
-        double scaleX = width/(maxXDelta);
-        double scaleY = height/(maxYDelta);
+        sirka = width - 200;
+        vyska = height - 200;
+        double scaleX = sirka/(maxXDelta-minX);
+        double scaleY = vyska/(maxYDelta-minY);
         scale = Math.min(scaleX, scaleY);
-        deltaScale = Math.min(Math.abs(deltaX),Math.abs(deltaY));
-
+        int nW = (int) ((maxXDelta-minX)*scale);
+        int nH = (int) ((maxYDelta-minY)*scale);
+        posunSouradniceX = (sirka-nW) / 2 + 100;
+        posunSouradniceY = (vyska-nH) / 2 + 100;
     }
 
     /**
@@ -311,7 +277,12 @@ public class DrawingPanel extends JPanel {
      * @return Změněný bod m z parametrů
      */
     public static Point2D model2window(Point2D m){
-        m.setLocation((int) (((m.getX()-minX)/scale)/deltaX),(int)(((m.getY()-minY)/scale)/deltaY));
+        if(deltaX > deltaY){
+            m.setLocation((int) (((m.getX()-posunSouradniceX)/scale)/(deltaX/deltaY)),(int)(((m.getY()-posunSouradniceY)/scale)));
+        } else {
+            m.setLocation((int) (((m.getX()-posunSouradniceX)/scale)),(int)(((m.getY()-posunSouradniceY)/scale)/(deltaY/deltaX)));
+
+        }
         return m;
     }
 
