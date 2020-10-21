@@ -1,7 +1,6 @@
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
@@ -104,9 +103,9 @@ public class L01_SpusteniSimulatoru extends JFrame {
 	 * @return nový graf
 	 */
 	public static JFreeChart makePointChart(MouseEvent event){
-		//Point2D pozice = DrawingPanel.model2window(event.getPoint());
-		//int presnaPozice = (int) ((pozice.getY()*Simulator.getDimension().x) + pozice.getX());
-		int presnaPozice = (int) (((event.getY()-75)*(Simulator.getDimension().x)) + event.getX()-75);
+		Point2D pozice = DrawingPanel.model2window(event.getPoint());
+		int presnaPozice = (int) ((pozice.getY()*Simulator.getDimension().x) + pozice.getX());
+		//int presnaPozice = (int) (((event.getY()-DrawingPanel.posunSouradniceY)*(Simulator.getDimension().x)) + event.getX()-DrawingPanel.posunSouradniceX);
 		//Cviceni s grafama
 		DefaultCategoryDataset dataset = datasets[presnaPozice];
 
@@ -146,9 +145,9 @@ public class L01_SpusteniSimulatoru extends JFrame {
 			int pocitadlo =0;
 			for (int j = zacatekX; j < konecX ; j++) {
 				for (int k = zacatekY; k < konecY; k++) {
-					//Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,k));
-					//int presnaPozice = (int) ((pozice.getY()*Simulator.getDimension().x) +pozice.getX());
-					int presnaPozice = (int) (((k-75)*Simulator.getDimension().x) + (j-75));
+					Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,k));
+					int presnaPozice = (int) ((pozice.getY()*Simulator.getDimension().x) +pozice.getX());
+					//int presnaPozice = (int) (((k-DrawingPanel.posunSouradniceY)*Simulator.getDimension().x) + (j-DrawingPanel.posunSouradniceX));
 					if ((double)datasets[presnaPozice].getValue(0,i) > 0){
 						pomocnej += (double) datasets[presnaPozice].getValue(0,i);
 						pocitadlo++;
@@ -168,22 +167,20 @@ public class L01_SpusteniSimulatoru extends JFrame {
 			public void datasetChanged(DatasetChangeEvent datasetChangeEvent) {
 				double pomocnej = 0;
 				int pocitadlo = 0;
-
-				for (int i = zacatekX; i < konecX ; i++) {
-					for (int j = zacatekY; j < konecY; j++) {
-						//Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,i));
-						//int presnaPozice = (int) ((pozice.getY() * Simulator.getDimension().x) + pozice.getX());
-						int presnaPozice = (int) (((i-75)*Simulator.getDimension().x) + (j-75));
-						if ((double) datasets[presnaPozice].getValue(0, newCounter - 1) > 0) {
+				for (int j = zacatekX; j < konecX; j++) {
+					for (int k = zacatekY; k < konecY; k++) {
+						Point2D pozice = DrawingPanel.model2window(new Point2D.Double(j,k));
+						int presnaPozice = (int)(pozice.getY() * Simulator.getDimension().x + pozice.getX());
+						if((double)datasets[presnaPozice].getValue(0,newCounter - 1) > 0){
 							pomocnej += (double) datasets[presnaPozice].getValue(0, newCounter - 1);
 							pocitadlo++;
 						}
 					}
 				}
-				if(pocitadlo == 0) {
-					dataset.addValue(0,"Oblast",datasets[0].getColumnKey(newCounter-1));
+				if(pocitadlo != 0){
+					dataset.addValue((Number) (pomocnej/pocitadlo), "Oblast", datasets[0].getColumnKey(newCounter - 1));
 				} else {
-					dataset.addValue((Number)(pomocnej/pocitadlo),"Oblast",datasets[0].getColumnKey(newCounter-1));
+					dataset.addValue(0, "Oblast", datasets[0].getColumnKey(newCounter - 1));
 				}
 				newCounter++;
 			}
@@ -204,7 +201,6 @@ public class L01_SpusteniSimulatoru extends JFrame {
 	categoryItemRenderer.setDefaultItemLabelFont(new Font("Calibri",Font.BOLD,12));
 	return oblastChart;
 
-
 	}
 
 	/**
@@ -215,43 +211,62 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		DrawingPanel panel = new DrawingPanel();
 
 		panel.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent mouseEvent) {
-				JFrame jFrame = new JFrame();
-				ChartPanel chartPanel = new ChartPanel(makePointChart(mouseEvent));
-				jFrame.add(chartPanel);
-				jFrame.setSize(chartPanel.getSize());
-				jFrame.pack();
-				jFrame.setLocationRelativeTo(null);
-				jFrame.setVisible(true);
+				@Override
+				public void mouseClicked(MouseEvent mouseEvent) {
+					try {
+							if ((mouseEvent.getX() > DrawingPanel.posunSouradniceX && mouseEvent.getX() < DrawingPanel.sirka + DrawingPanel.posunSouradniceX) &&
+									(mouseEvent.getY() > DrawingPanel.posunSouradniceY && mouseEvent.getY() < DrawingPanel.vyska + DrawingPanel.posunSouradniceY)) {
+								JFrame jFrame = new JFrame();
+								ChartPanel chartPanel = new ChartPanel(makePointChart(mouseEvent));
+								jFrame.add(chartPanel);
+								jFrame.setSize(chartPanel.getSize());
+								jFrame.pack();
+								jFrame.setLocationRelativeTo(null);
+								jFrame.setVisible(true);
+							}
 
-			}
-			@Override
-			public void mousePressed(MouseEvent mouseEvent) {
-				pressed = mouseEvent.getPoint();
-			}
-			@Override
-			public void mouseReleased(MouseEvent mouseEvent) {
-				if(pressed.getX() != mouseEvent.getX() && pressed.getY() != mouseEvent.getY()) {
-					JFrame jFrame = new JFrame();
-					ChartPanel chartPanel = new ChartPanel(makeAreaChart(mouseEvent));
-					jFrame.add(chartPanel);
-					jFrame.setSize(chartPanel.getSize());
-					jFrame.pack();
-					jFrame.setLocationRelativeTo(null);
-					jFrame.setVisible(true);
+					} catch (Exception ignored){
+					}
 				}
 
-			}
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent) {
+				@Override
+				public void mousePressed(MouseEvent mouseEvent) {
+					pressed = mouseEvent.getPoint();
+				}
 
-			}
-			@Override
-			public void mouseExited(MouseEvent mouseEvent) {
+				@Override
+				public void mouseReleased(MouseEvent mouseEvent) {
+					int x = mouseEvent.getX();
+					int y = mouseEvent.getY();
+					try {
+					if (pressed.getX() != mouseEvent.getX() || pressed.getY() != mouseEvent.getY()) {
+						if (((x > DrawingPanel.posunSouradniceX && x < DrawingPanel.sirka + DrawingPanel.posunSouradniceX)
+								&& (y > DrawingPanel.posunSouradniceY && y < DrawingPanel.vyska + DrawingPanel.posunSouradniceY))
+								&& ((pressed.getX() > DrawingPanel.posunSouradniceX && pressed.getX() < DrawingPanel.sirka+DrawingPanel.posunSouradniceX)
+								&& (pressed.getY() > DrawingPanel.posunSouradniceY && pressed.getY() < DrawingPanel.vyska+DrawingPanel.posunSouradniceY))) {
+							JFrame jFrame = new JFrame();
+							ChartPanel chartPanel = new ChartPanel(makeAreaChart(mouseEvent));
+							jFrame.add(chartPanel);
+							jFrame.setSize(chartPanel.getSize());
+							jFrame.pack();
+							jFrame.setLocationRelativeTo(null);
+							jFrame.setVisible(true);
+						}
+					}
+					} catch (Exception ignored){
+					}
+				}
 
-			}
-		});
+				@Override
+				public void mouseEntered(MouseEvent mouseEvent) {
+
+				}
+
+				@Override
+				public void mouseExited(MouseEvent mouseEvent) {
+
+				}
+			});
 
 
 		JButton bttnZpomal = new JButton("Zpomal");
@@ -260,10 +275,8 @@ public class L01_SpusteniSimulatoru extends JFrame {
 		JButton bttnLegen = new JButton("Legenda");
 
 		Dimension velikostOkna;
-
-
-		velikostOkna = new Dimension(Simulator.getDimension().x+150,
-				(Simulator.getDimension().y + bttnZrychli.getHeight()+150));
+		velikostOkna = new Dimension(Simulator.getDimension().x +200,
+					(Simulator.getDimension().y + 200 + bttnZrychli.getHeight()));
 
 		panel.setPreferredSize(velikostOkna);
 		win.setLayout(new BorderLayout());
@@ -300,7 +313,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 
 		bttnZastav.addActionListener(actionEvent -> pauza = true);
 
-		bttnPokrac.addActionListener(actionEvent -> pauza=false);
+		bttnPokrac.addActionListener(actionEvent -> pauza = false);
 
 		bttnLegen.addActionListener(actionEvent -> {
 			JFrame jFrame = new JFrame();

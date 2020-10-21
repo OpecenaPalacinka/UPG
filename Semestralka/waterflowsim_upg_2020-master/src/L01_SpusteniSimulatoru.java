@@ -57,7 +57,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 			Simulator.runScenario(Integer.parseInt(args[0]));
 		}
 		else {
-			Simulator.runScenario(5);
+			Simulator.runScenario(7);
 		}
 
 		JFrame jf = new JFrame();
@@ -224,6 +224,7 @@ public class L01_SpusteniSimulatoru extends JFrame {
 								jFrame.setLocationRelativeTo(null);
 								jFrame.setVisible(true);
 							}
+
 					} catch (Exception ignored){
 					}
 				}

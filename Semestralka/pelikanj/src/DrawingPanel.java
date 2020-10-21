@@ -20,7 +20,7 @@ public class DrawingPanel extends JPanel {
      * Privátní proměnné celé třídy, začátek souřadnicového systému (inicializuju na nulu
      * (měli by být asi inicialiované na Simulator.getStart().x/y))
      */
-    public static double minX, minY;
+    public static double minX, minY, maxXDelta, maxYDelta;
     /**
      * Privátní proměnná celé třídy, vytváří pole se zdroji vody
      */
@@ -42,11 +42,15 @@ public class DrawingPanel extends JPanel {
      */
     public static int posunSouradniceX, posunSouradniceY;
     /** DeltaX */
-    public static double deltaX = Simulator.getDelta().x;
+    public static double deltaX = Math.abs(Simulator.getDelta().x);
     /** DeltaY*/
-    public static double deltaY = Simulator.getDelta().y;
+    public static double deltaY = Math.abs(Simulator.getDelta().y);
     /** Hlavní čára šipky*/
     public static Line2D hlavniCara;
+
+    public static int sirka,vyska;
+
+
 
     /**
      * "Poslední" metoda, která dává dohromady všechny metody nad ní, volá metodu drawWaterFlowState
@@ -65,10 +69,10 @@ public class DrawingPanel extends JPanel {
             g2.setStroke(new BasicStroke(2));
         }
 
+
         AffineTransform puvodniTransformace = g2.getTransform();
         g2.translate(posunSouradniceX, posunSouradniceY);
         g2.scale(scale, scale);
-
         drawWaterFlowState(g2);
 
         g2.setTransform(puvodniTransformace);
@@ -145,11 +149,9 @@ public class DrawingPanel extends JPanel {
         }
 
         BufferedImage terenObraz = new BufferedImage((int)maxX,(int)maxY, BufferedImage.TYPE_3BYTE_BGR);
-        terenObraz.setRGB(0,0,(int)maxX,(int)maxY,teren,0,(int)maxX);
-        //g.drawImage(terenObraz,0,0, (int) (maxX*Math.abs(deltaX)),
-        //                    (int) (maxY*Math.abs(deltaY)),null);
-        g.drawImage(terenObraz,0,0, (int) (maxX),
-                    (int) (maxY),null);
+        terenObraz.setRGB(0,0,(int)maxX, (int)maxY, teren,0,(int)maxX);
+        g.drawImage(terenObraz,0,0, (int) (maxXDelta),
+                    (int) (maxYDelta),null);
     }
 
     /**
@@ -174,10 +176,8 @@ public class DrawingPanel extends JPanel {
 
         BufferedImage teren = new BufferedImage((int)maxX,(int)maxY,BufferedImage.TYPE_4BYTE_ABGR);
         teren.setRGB(0,0, (int) maxX, (int) maxY,voda,0, (int) maxX);
-        //g.drawImage(teren,0,0, (int) (maxX*Math.abs(deltaX)),
-        //                (int) (maxY*Math.abs(deltaY)),null);
-        g.drawImage(teren,0,0, (int) (maxX),
-                (int) (maxY),null);
+        g.drawImage(teren,0,0, (int) (maxXDelta),
+                (int) (maxYDelta),null);
 
         drawWaterSources(g);
     }
@@ -189,7 +189,7 @@ public class DrawingPanel extends JPanel {
      */
     public void drawWaterSources(Graphics2D g){
         for (WaterSourceUpdater waterSourceUpdater: vodniZdroje) {
-            Point2D poziceSipky = new Point2D.Double(waterSourceUpdater.getIndex() % maxX, waterSourceUpdater.getIndex() / maxX);
+            Point2D poziceSipky = new Point2D.Double(waterSourceUpdater.getIndex() % maxX * (maxXDelta / Simulator.getDimension().x), waterSourceUpdater.getIndex() / maxX * (maxYDelta / Simulator.getDimension().y));
             drawWaterFlowLabel(poziceSipky, Simulator.getGradient(waterSourceUpdater.getIndex()), waterSourceUpdater.getName(), g);
         }
     }
@@ -211,8 +211,9 @@ public class DrawingPanel extends JPanel {
         }
         g.rotate(rotace);
         g.setColor(new Color(255,255,0));
-        g.setFont(new Font("Calibri",Font.BOLD,18));
-        drawArrow(new Point2D.Double(0,0), new Vector2D(-1,0), g);
+        g.setFont(new Font("Calibri",Font.BOLD,13));
+        drawArrow(new Point2D.Double(0,0), new Vector2D(-0.9,0), g);
+
 
         g.setColor(Color.BLACK);
         if(dirFlow.x.doubleValue()>0){
@@ -229,13 +230,22 @@ public class DrawingPanel extends JPanel {
      * stavových proměnných.
      */
     public void computeModelDimensions(){
-       /* Se zakomentovaným minX/Y se celý obrázek zvláštně posouval, s 0 to funguje dobře */
-       // minX = Simulator.getStart().x;
-       // minY = Simulator.getStart().y;
         minX = 0;
         minY = 0;
         maxX = Simulator.getDimension().x;
         maxY = Simulator.getDimension().y;
+        maxXDelta = Simulator.getDimension().x;
+        maxYDelta = Simulator.getDimension().y;
+
+        if(deltaX > deltaY)
+        {
+            maxXDelta = maxX * (deltaX / deltaY);
+        }
+        else
+        {
+            maxYDelta = maxY *  (deltaY / deltaX);
+        }
+
     }
 
     /**
@@ -249,16 +259,15 @@ public class DrawingPanel extends JPanel {
      */
     public void computeModel2WindowTransformation(int width, int height){
         computeModelDimensions();
-
-        width -= 150;
-        height -= 150;
-
-        double scaleX = width/(maxX-minX);
-        double scaleY = height/(maxY-minY);
+        sirka = width - 200;
+        vyska = height - 200;
+        double scaleX = sirka/(maxXDelta-minX);
+        double scaleY = vyska/(maxYDelta-minY);
         scale = Math.min(scaleX, scaleY);
-
-        posunSouradniceX = (width-((int) ((maxX-minX)*scale)))/2+75;
-        posunSouradniceY = (height-((int) ((maxY-minY)*scale)))/2+75;
+        int nW = (int) ((maxXDelta-minX)*scale);
+        int nH = (int) ((maxYDelta-minY)*scale);
+        posunSouradniceX = (sirka-nW) / 2 + 100;
+        posunSouradniceY = (vyska-nH) / 2 + 100;
     }
 
     /**
@@ -268,7 +277,12 @@ public class DrawingPanel extends JPanel {
      * @return Změněný bod m z parametrů
      */
     public static Point2D model2window(Point2D m){
-        m.setLocation((int) (((m.getX()-minX)/scale)/deltaX),(int)(((m.getY()-minY)/scale)/deltaY));
+        if(deltaX > deltaY){
+            m.setLocation((int) (((m.getX()-posunSouradniceX)/scale)/(deltaX/deltaY)),(int)(((m.getY()-posunSouradniceY)/scale)));
+        } else {
+            m.setLocation((int) (((m.getX()-posunSouradniceX)/scale)),(int)(((m.getY()-posunSouradniceY)/scale)/(deltaY/deltaX)));
+
+        }
         return m;
     }
 
